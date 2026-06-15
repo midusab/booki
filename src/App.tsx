@@ -9,7 +9,6 @@ import { INITIAL_BOOKS, INITIAL_REVIEWS, INITIAL_BADGES } from "./data";
 import { SmartDashboard } from "./components/SmartDashboard";
 import { AmbientReadingRoom } from "./components/AmbientReadingRoom";
 import { BookshelfAnalytics } from "./components/BookshelfAnalytics";
-import { BookCompanionChat } from "./components/BookCompanionChat";
 import { DiscussionLounge } from "./components/DiscussionLounge";
 import { 
   Sparkles, 
@@ -37,7 +36,7 @@ export default function App() {
   const [badges, setBadges] = useState<ReadingBadge[]>([]);
 
   // Navigation state
-  const [currentView, setCurrentView] = useState<"dashboard" | "bookshelf" | "timer" | "chat" | "lounge">("dashboard");
+  const [currentView, setCurrentView] = useState<"dashboard" | "bookshelf" | "timer" | "lounge">("dashboard");
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   // Initialize data from localStorage or default static templates on mount
@@ -243,8 +242,8 @@ export default function App() {
               <span className="font-serif text-3xl font-black tracking-wider text-[#F40009] block leading-none">
                 MidR...
               </span>
-              <span className="text-[9px] tracking-widest text-gray-500 uppercase font-mono block mt-1">
-                IMMERSIVE READER SANCTUARY
+              <span className="text-[9px] tracking-widest text-gray-500 font-mono block mt-1 uppercase">
+                Your Personal Reading Space
               </span>
             </div>
           </div>
@@ -261,7 +260,7 @@ export default function App() {
               }`}
             >
               <Compass className="w-4 h-4 text-[#F40009]" />
-              <span>Sanctuary</span>
+              <span className="uppercase tracking-wider text-[10px]">Dashboard</span>
             </button>
             <button
               onClick={() => setCurrentView("bookshelf")}
@@ -273,7 +272,7 @@ export default function App() {
               }`}
             >
               <BookOpen className="w-4 h-4 text-[#F40009]" />
-              <span>Library & Progress</span>
+              <span className="uppercase tracking-wider text-[10px]">Library</span>
             </button>
             <button
               onClick={() => setCurrentView("timer")}
@@ -285,19 +284,7 @@ export default function App() {
               }`}
             >
               <Clock className="w-4 h-4 text-[#F40009]" />
-              <span>Pomodoro focus</span>
-            </button>
-            <button
-              onClick={() => setCurrentView("chat")}
-              type="button"
-              className={`px-4.5 py-2.5 rounded-xl text-xs font-semibold tracking-wide transition-all cursor-pointer flex items-center gap-1.5 ${
-                currentView === "chat"
-                  ? "bg-white text-[#1B0203] shadow-xs"
-                  : "text-gray-500 hover:text-[#1B0203]"
-              }`}
-            >
-              <Sparkles className="w-4 h-4 text-[#F40009]" />
-              <span>Oracle Companion</span>
+              <span className="uppercase tracking-wider text-[10px]">Pomodoro Timer</span>
             </button>
             <button
               onClick={() => setCurrentView("lounge")}
@@ -309,16 +296,9 @@ export default function App() {
               }`}
             >
               <MessageSquare className="w-4 h-4 text-[#F40009]" />
-              <span>Discussion Feed</span>
+              <span className="uppercase tracking-wider text-[10px]">Discussions</span>
             </button>
           </nav>
- 
-          {/* Quick Stats Pillar */}
-          <div className="hidden lg:flex items-center gap-3 bg-[#FFEBEB]/40 border border-[#FFEBEB] px-4 py-2 rounded-2xl text-xs">
-            <span className="text-[#F40009] font-mono font-bold tracking-wide">● Active Sanctuary</span>
-            <div className="w-px h-3.5 bg-[#FFEBEB]"></div>
-            <span className="text-gray-600 font-serif font-semibold">Streak: {readingStreak}d</span>
-          </div>
 
           {/* User Profile Pill & Logout (Desktop) */}
           <div className="hidden lg:flex items-center gap-3">
@@ -331,7 +311,7 @@ export default function App() {
                   referrerPolicy="no-referrer"
                 />
                 <div className="min-w-0">
-                  <span className="text-[8px] uppercase tracking-wider text-gray-400 font-mono font-bold block leading-none">Bibliophile</span>
+                  <span className="text-[8px] text-gray-400 font-mono font-bold block leading-none uppercase tracking-wider">Reader</span>
                   <span className="text-[#1B0203] block truncate max-w-[100px] leading-tight mt-0.5 text-xs font-bold font-serif">
                     {user.displayName || user.email?.split("@")[0]}
                   </span>
@@ -343,7 +323,7 @@ export default function App() {
               onClick={logout}
               type="button"
               className="p-2.5 rounded-2xl bg-[#FFEBEB]/40 hover:bg-[#FFEBEB] text-[#F40009] border border-[#FFEBEB] hover:border-[#F40009]/20 transition-all cursor-pointer flex items-center justify-center shadow-2xs"
-              title="Sign out of Sanctuary"
+              title="Sign Out"
             >
               <LogOut className="w-4 h-4" />
             </button>
@@ -370,7 +350,7 @@ export default function App() {
               }`}
             >
               <Compass className="w-4 h-4" />
-              <span>Sanctuary Dashboard</span>
+              <span className="uppercase tracking-wider">Dashboard</span>
             </button>
             <button
               onClick={() => { setCurrentView("bookshelf"); setIsMobileMenuOpen(false); }}
@@ -380,7 +360,7 @@ export default function App() {
               }`}
             >
               <BookOpen className="w-4 h-4" />
-              <span>Library & Progress</span>
+              <span className="uppercase tracking-wider">Library</span>
             </button>
             <button
               onClick={() => { setCurrentView("timer"); setIsMobileMenuOpen(false); }}
@@ -390,17 +370,7 @@ export default function App() {
               }`}
             >
               <Clock className="w-4 h-4" />
-              <span>Pomodoro Focus Room</span>
-            </button>
-            <button
-              onClick={() => { setCurrentView("chat"); setIsMobileMenuOpen(false); }}
-              type="button"
-              className={`px-4 py-3 rounded-xl text-xs font-semibold tracking-wide text-left flex items-center gap-2 transition-colors ${
-                currentView === "chat" ? "bg-[#F40009] text-white" : "text-gray-500 hover:bg-[#FFEBEB]/40"
-              }`}
-            >
-              <Sparkles className="w-4 h-4" />
-              <span>Oracle Companion Chat</span>
+              <span className="uppercase tracking-wider">Pomodoro Timer</span>
             </button>
             <button
               onClick={() => { setCurrentView("lounge"); setIsMobileMenuOpen(false); }}
@@ -410,7 +380,7 @@ export default function App() {
               }`}
             >
               <MessageSquare className="w-4 h-4" />
-              <span>Discussion Feed Forum</span>
+              <span className="uppercase tracking-wider">Discussions</span>
             </button>
 
             {/* Mobile User Profile & LogOut */}
@@ -424,7 +394,7 @@ export default function App() {
                     referrerPolicy="no-referrer"
                   />
                   <div>
-                    <span className="text-[8px] uppercase tracking-wider text-gray-400 font-mono block leading-none">MEMBER PASSPORT</span>
+                    <span className="text-[8px] text-gray-400 font-mono block leading-none uppercase tracking-wider">Member</span>
                     <span className="text-xs font-bold text-[#1B0203] block mt-1 leading-none font-serif">
                       {user.displayName || user.email?.split("@")[0]}
                     </span>
@@ -434,10 +404,10 @@ export default function App() {
               <button
                 onClick={logout}
                 type="button"
-                className="px-3.5 py-2.5 bg-[#FFEBEB]/60 hover:bg-[#FFEBEB] hover:text-[#B80006] text-[#F40009] text-xxxxs uppercase tracking-widest font-mono font-bold rounded-xl border border-[#FFEBEB] cursor-pointer transition-all flex items-center gap-1.5"
+                className="px-3.5 py-2.5 bg-[#FFEBEB]/60 hover:bg-[#FFEBEB] hover:text-[#B80006] text-[#F40009] text-xs font-mono font-bold rounded-xl border border-[#FFEBEB] cursor-pointer transition-all flex items-center gap-1.5 uppercase tracking-wider"
               >
                 <LogOut className="w-3.5 h-3.5" />
-                <span>Log out</span>
+                <span>Sign Out</span>
               </button>
             </div>
           </nav>
@@ -474,10 +444,6 @@ export default function App() {
             books={books}
             onUpdateBookProgress={handleUpdateBookProgress}
           />
-        )}
-
-        {currentView === "chat" && (
-          <BookCompanionChat />
         )}
 
         {currentView === "lounge" && (

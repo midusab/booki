@@ -120,7 +120,7 @@ export const INITIAL_REVIEWS: Review[] = [
 export const INITIAL_BADGES: ReadingBadge[] = [
   {
     id: "badge-1",
-    title: "Sanctuary Devotee",
+    title: "steady habits",
     description: "Achieve a 5-day reading streak",
     icon: "🎯",
     unlocked: true,

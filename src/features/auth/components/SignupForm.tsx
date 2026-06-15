@@ -58,8 +58,8 @@ export const SignupForm: React.FC<SignupFormProps> = ({ onToggleToLogin }) => {
     <form onSubmit={handleSubmit} className="space-y-4">
       {/* Name representation */}
       <div className="space-y-1">
-        <label className="text-xs text-gray-500 font-sans font-normal block pl-1">
-          nickname
+        <label className="text-xs text-gray-500 font-sans font-normal block pl-1 uppercase tracking-wider">
+          Display Name
         </label>
         <div className="relative">
           <span className="absolute left-4 top-3 text-gray-400">
@@ -69,7 +69,7 @@ export const SignupForm: React.FC<SignupFormProps> = ({ onToggleToLogin }) => {
             type="text"
             value={displayName}
             onChange={(e) => setDisplayName(e.target.value)}
-            placeholder="e.g. alex"
+            placeholder="e.g. Alex"
             disabled={localLoading}
             className="w-full bg-[#FFEBEB]/10 border border-[#FFEBEB] focus:border-[#F40009] rounded-xl pl-11 pr-4 py-2.5 text-xs text-gray-800 focus:outline-none transition-all placeholder-gray-400"
           />
@@ -78,8 +78,8 @@ export const SignupForm: React.FC<SignupFormProps> = ({ onToggleToLogin }) => {
 
       {/* Email input field */}
       <div className="space-y-1">
-        <label className="text-xs text-gray-500 font-sans font-normal block pl-1">
-          email address
+        <label className="text-xs text-gray-500 font-sans font-normal block pl-1 uppercase tracking-wider">
+          Email Address
         </label>
         <div className="relative">
           <span className="absolute left-4 top-3 text-gray-400">
@@ -89,7 +89,7 @@ export const SignupForm: React.FC<SignupFormProps> = ({ onToggleToLogin }) => {
             type="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            placeholder="name@email.com"
+            placeholder="Name@email.com"
             disabled={localLoading}
             className="w-full bg-[#FFEBEB]/10 border border-[#FFEBEB] focus:border-[#F40009] rounded-xl pl-11 pr-4 py-2.5 text-xs text-gray-800 focus:outline-none transition-all placeholder-gray-400"
           />
@@ -98,8 +98,8 @@ export const SignupForm: React.FC<SignupFormProps> = ({ onToggleToLogin }) => {
 
       {/* Password input field */}
       <div className="space-y-1">
-        <label className="text-xs text-gray-500 font-sans font-normal block pl-1">
-          password
+        <label className="text-xs text-gray-500 font-sans font-normal block pl-1 uppercase tracking-wider">
+          Password
         </label>
         <div className="relative">
           <span className="absolute left-4 top-3 text-gray-400">
@@ -109,7 +109,7 @@ export const SignupForm: React.FC<SignupFormProps> = ({ onToggleToLogin }) => {
             type={showPassword ? "text" : "password"}
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            placeholder="choose a password"
+            placeholder="Choose a password"
             disabled={localLoading}
             className="w-full bg-[#FFEBEB]/10 border border-[#FFEBEB] focus:border-[#F40009] rounded-xl pl-11 pr-11 py-2.5 text-xs text-gray-800 focus:outline-none transition-all placeholder-gray-400"
           />
@@ -126,27 +126,27 @@ export const SignupForm: React.FC<SignupFormProps> = ({ onToggleToLogin }) => {
       <button
         type="submit"
         disabled={localLoading}
-        className="w-full py-3 bg-[#F40009] hover:bg-[#B80006] text-white text-xs font-semibold rounded-xl cursor-pointer disabled:opacity-50 transition-colors flex items-center justify-center gap-2 mt-2"
+        className="w-full py-3 bg-[#F40009] hover:bg-[#B80006] text-white text-xs font-semibold rounded-xl cursor-pointer disabled:opacity-50 transition-colors flex items-center justify-center gap-2 mt-2 uppercase tracking-widest"
       >
         {localLoading ? (
           <>
             <Loader2 className="w-4 h-4 animate-spin text-white" />
-            <span>creating passport...</span>
+            <span>Creating account...</span>
           </>
         ) : (
-          <span>create account</span>
+          <span>Sign Up</span>
         )}
       </button>
 
       <div className="text-center pt-2">
         <p className="text-xxs text-gray-400">
-          already registered?{" "}
+          Already have an account?{" "}
           <button
             type="button"
             onClick={onToggleToLogin}
             className="text-[#F40009] font-semibold hover:underline"
           >
-            log in instead
+            Sign In
           </button>
         </p>
       </div>

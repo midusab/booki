@@ -269,11 +269,11 @@ export const AmbientReadingRoom: React.FC<AmbientReadingRoomProps> = ({
         <div className="bg-white p-8 md:p-10 rounded-3xl border border-[#FFEBEB] shadow-sm flex flex-col justify-between">
           <div className="flex items-center justify-between border-b border-[#FFEBEB] pb-5">
             <div className="space-y-1">
-              <div className="inline-flex items-center gap-1.5 bg-[#FFEBEB]/60 px-2.5 py-1 rounded-full text-xxs tracking-wider text-[#F40009] font-mono">
+              <div className="inline-flex items-center gap-1.5 bg-[#FFEBEB]/60 px-2.5 py-1 rounded-full text-xxs tracking-wider text-[#F40009] font-mono uppercase">
                 {mode === "focus" ? <Brain className="w-3 h-3" /> : <Coffee className="w-3 h-3" />}
-                <span>{mode === "focus" ? "CONCENTRATIVE INTENSITY" : "TEA RETREAT"}</span>
+                <span>{mode === "focus" ? "Focus Session" : "Break Session"}</span>
               </div>
-              <h3 className="text-xl font-serif text-[#1B0203] font-semibold font-serif">The Pomodoro Hourglass</h3>
+              <h3 className="text-xl font-serif text-[#1B0203] font-semibold font-serif uppercase tracking-wide">Pomodoro Timer</h3>
             </div>
             
             <div className="flex items-center gap-1">
@@ -328,8 +328,8 @@ export const AmbientReadingRoom: React.FC<AmbientReadingRoomProps> = ({
                 <span className="text-4xl font-serif font-black text-[#1B0203] flex items-center justify-center font-mono">
                   {formatTime(timeLeft)}
                 </span>
-                <span className="text-xxs tracking-widest text-gray-500 font-mono block">
-                  {isRunning ? "SOUNDING EMBER" : "PAUSED"}
+                <span className="text-xxs tracking-widest text-gray-500 font-mono block uppercase">
+                  {isRunning ? "Active" : "Paused"}
                 </span>
               </div>
             </div>
@@ -367,12 +367,12 @@ export const AmbientReadingRoom: React.FC<AmbientReadingRoomProps> = ({
               {isRunning ? (
                 <>
                   <Pause className="w-5 h-5 fill-current text-white" />
-                  <span>Pause Solitude</span>
+                  <span className="uppercase">Pause Timer</span>
                 </>
               ) : (
                 <>
                   <Play className="w-5 h-5 fill-current text-white" />
-                  <span>Begin Solitude</span>
+                  <span className="uppercase">Start Timer</span>
                 </>
               )}
             </button>
@@ -398,18 +398,18 @@ export const AmbientReadingRoom: React.FC<AmbientReadingRoomProps> = ({
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2.5">
                   <Bookmark className="w-5 h-5 text-[#F40009]" />
-                  <h4 className="text-sm tracking-wide font-serif font-bold text-[#FFFDF9]">Active Focus Reading</h4>
+                  <h4 className="text-sm font-serif font-bold text-[#FFFDF9] uppercase tracking-wide">Reading Focus Tracker</h4>
                 </div>
                 <BookOpen className="w-4 h-4 text-red-400" />
               </div>
 
               <p className="text-xxs text-gray-400 leading-relaxed">
-                Connect your deep solitude timers directly with your reading logs. Select your current book and record pages read after concentrating.
+                Connect your focus timers with your reading log metrics. Select your book and save pages read after meditating.
               </p>
 
               {/* Book selector select menu dropdown */}
               <div className="space-y-1.5 mt-2">
-                <label className="text-xxxxs uppercase tracking-wider text-red-300 font-mono block">Selected Companion Book</label>
+                <label className="text-xxxxs text-red-300 font-mono block uppercase tracking-wider">Active Book</label>
                 <select
                   value={selectedBookId}
                   onChange={(e) => setSelectedBookId(e.target.value)}
@@ -434,9 +434,9 @@ export const AmbientReadingRoom: React.FC<AmbientReadingRoomProps> = ({
                       referrerPolicy="no-referrer"
                     />
                     <div className="flex-1 min-w-0">
-                      <span className="text-xxxxs font-mono text-[#F40009] uppercase block tracking-wider">Current reading page</span>
+                      <span className="text-xxxxs font-mono text-[#F40009] block uppercase tracking-wider">Current Page</span>
                       <h5 className="text-xs font-serif font-bold text-white truncate">{selectedBook.title}</h5>
-                      <span className="text-xxxxs text-gray-400 block mt-0.5">Author: {selectedBook.author}</span>
+                      <span className="text-xxxxs text-gray-400 block mt-0.5 uppercase tracking-wider">Author: {selectedBook.author}</span>
                     </div>
                   </div>
 
@@ -491,14 +491,14 @@ export const AmbientReadingRoom: React.FC<AmbientReadingRoomProps> = ({
           <div className="flex items-center gap-2.5 mb-2">
             <span className="text-3xl">☕</span>
             <div>
-              <h3 className="text-xl font-serif text-[#1B0203] font-semibold font-serif">Sanctuary Studio Mixer</h3>
-              <p className="text-xs text-gray-500">Create a custom bespoke reading acoustics loop.</p>
+              <h3 className="text-xl font-serif text-[#1B0203] font-semibold font-serif uppercase tracking-wide">Ambient Sound Mixer</h3>
+              <p className="text-xs text-gray-500">Mix cozy sounds for your reading space.</p>
             </div>
           </div>
 
-          <div className="mt-2 text-xxs font-mono text-[#F40009] bg-[#FFEBEB]/40 py-2 px-3.5 rounded-xl flex items-center gap-2 border border-[#FFEBEB]">
+          <div className="mt-2 text-xxs font-mono text-[#F40009] bg-[#FFEBEB]/40 py-2 px-3.5 rounded-xl flex items-center gap-2 border border-[#FFEBEB] uppercase">
             <Info className="w-3.5 h-3.5 text-[#F40009] shrink-0" />
-            <span>Mixer plays highly reliable, loopable public background stems safely.</span>
+            <span>Mix beautiful public noise background tracks dynamically.</span>
           </div>
         </div>
 
@@ -567,7 +567,7 @@ export const AmbientReadingRoom: React.FC<AmbientReadingRoomProps> = ({
           </div>
           <div className="flex items-center gap-1 text-[#F40009]">
             <Sparkles className="w-3 h-3 text-[#F40009]" />
-            <span className="font-semibold tracking-wider font-mono">LO-FI ATMOSPHERE</span>
+            <span className="font-semibold font-mono uppercase tracking-wider text-xxxxs">Cozy Sounds</span>
           </div>
         </div>
 
@@ -580,7 +580,7 @@ export const AmbientReadingRoom: React.FC<AmbientReadingRoomProps> = ({
             <Check className="w-4.5 h-4.5 text-[#F40009]" />
           </div>
           <div>
-            <span className="text-xxs font-semibold font-mono text-[#FFEBEB] block uppercase tracking-wider">Tracker Updated</span>
+            <span className="text-xxs font-semibold font-mono text-[#FFEBEB] block uppercase tracking-wider">Progress Updated</span>
             <p className="text-xs text-white font-medium">{sessionCompletedNotification}</p>
           </div>
         </div>
@@ -607,10 +607,10 @@ export const AmbientReadingRoom: React.FC<AmbientReadingRoomProps> = ({
               </div>
               
               <div className="space-y-1">
-                <span className="text-xxs font-mono text-[#F40009] tracking-wider uppercase block">Focus block complete</span>
-                <h3 className="text-lg font-serif font-bold text-[#1B0203]">Solitude Focus Achieved!</h3>
+                <span className="text-xxs font-mono text-[#F40009] block uppercase tracking-wider">Session Complete</span>
+                <h3 className="text-lg font-serif font-bold text-[#1B0203] uppercase tracking-wide">Focus Session Complete!</h3>
                 <p className="text-xs text-gray-500 leading-relaxed px-2">
-                  Fantastic discipline. You completed 25 minutes of quiet, dedicated reading. Log your page accomplishment below:
+                  Well done. You finished your reading session. Save your pages below:
                 </p>
               </div>
 
@@ -618,7 +618,7 @@ export const AmbientReadingRoom: React.FC<AmbientReadingRoomProps> = ({
               <form onSubmit={handleModalSessionLogSubmit} className="space-y-4 pt-2 text-left">
                 {/* Book selection check */}
                 <div className="space-y-1">
-                  <label className="text-xxxxs font-mono text-gray-400 uppercase tracking-widest block">Apply log to Book</label>
+                  <label className="text-xxxxs font-mono text-gray-400 block uppercase tracking-wider">Select Book</label>
                   <select
                     value={selectedBookId}
                     onChange={(e) => setSelectedBookId(e.target.value)}
@@ -634,7 +634,7 @@ export const AmbientReadingRoom: React.FC<AmbientReadingRoomProps> = ({
 
                 {/* Input form details */}
                 <div className="space-y-1">
-                  <label className="text-xxxxs font-mono text-gray-400 uppercase tracking-widest block">Deed Details (Pages Completed)</label>
+                  <label className="text-xxxxs font-mono text-gray-400 block uppercase tracking-wider">Pages Completed</label>
                   <div className="relative">
                     <input
                       type="number"
@@ -654,15 +654,15 @@ export const AmbientReadingRoom: React.FC<AmbientReadingRoomProps> = ({
                   <button
                     onClick={() => setShowLogModal(false)}
                     type="button"
-                    className="border border-[#FFEBEB] text-gray-500 hover:bg-gray-50 rounded-xl font-semibold text-xs py-3.5 cursor-pointer text-center transition-all"
+                    className="border border-[#FFEBEB] text-gray-500 hover:bg-gray-50 rounded-xl font-semibold text-xs py-3.5 cursor-pointer text-center transition-all uppercase tracking-wider"
                   >
-                    Skip Logging
+                    Skip
                   </button>
                   <button
                     type="submit"
-                    className="bg-[#F40009] hover:bg-[#B80006] text-white font-semibold text-xs rounded-xl py-3.5 cursor-pointer text-center transition-all shadow-md"
+                    className="bg-[#F40009] hover:bg-[#B80006] text-white font-semibold text-xs rounded-xl py-3.5 cursor-pointer text-center transition-all shadow-md uppercase tracking-wider"
                   >
-                    Inscribe Deed
+                    Save Pages
                   </button>
                 </div>
               </form>

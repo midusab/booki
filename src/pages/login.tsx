@@ -29,23 +29,23 @@ export const LoginGate: React.FC = () => {
           <div className="flex items-center justify-center gap-2">
             <span className="text-2xl">📚</span>
             <span className="font-serif text-2xl font-black text-[#F40009] tracking-tight">
-              midr...
+              MidR...
             </span>
           </div>
-          <p className="text-[10px] tracking-widest text-[#F40009]/80 font-mono">
-            immersive reader sanctuary
+          <p className="text-[10px] tracking-widest text-[#F40009]/80 font-mono uppercase">
+            Your Personal Reading Space
           </p>
         </div>
 
         {/* Dynamic header title based on active view */}
         <div className="text-center space-y-1 mb-5">
           <h2 className="font-serif text-lg font-bold text-[#1B0203]">
-            {activeForm === "signup" ? "register membership" : "welcome back"}
+            {activeForm === "signup" ? "Create Account" : "Welcome Back"}
           </h2>
           <p className="text-xxs text-gray-400">
             {activeForm === "signup" 
-              ? "registration is required to unlock full immersion"
-              : "enter your credentials to access your audio rooms"}
+              ? "Sign up to save your reading achievements"
+              : "Sign in to view your books and analytics"}
           </p>
         </div>
 
@@ -73,7 +73,7 @@ export const LoginGate: React.FC = () => {
 
         {/* Micro footer */}
         <p className="text-center text-xxxxs text-gray-300 font-mono tracking-widest uppercase mt-8 pointer-events-none">
-          secured passport gateway
+          SECURE SIGN IN GATEWAY
         </p>
       </motion.div>
     </div>

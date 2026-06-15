@@ -12,8 +12,7 @@ import {
   GoogleAuthProvider, 
   signInWithPopup,
   updateProfile,
-  User,
-  GithubAuthProvider
+  User
 } from "firebase/auth";
 import { auth } from "../lib/firebase";
 import { UserProfile } from "../features/auth/types";
@@ -26,7 +25,6 @@ interface AuthContextType {
   registerWithEmail: (email: string, pass: string, name: string) => Promise<void>;
   loginWithEmail: (email: string, pass: string) => Promise<void>;
   loginWithGoogle: () => Promise<void>;
-  loginWithGitHub: () => Promise<void>;
   logout: () => Promise<void>;
   clearError: () => void;
 }
@@ -114,19 +112,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
   };
 
-  const loginWithGitHub = async () => {
-    setLoading(true);
-    setError(null);
-    try {
-      const provider = new GithubAuthProvider();
-      await signInWithPopup(auth, provider);
-    } catch (err: any) {
-      setError(err.message || "GitHub authentication failed");
-      setLoading(false);
-      throw err;
-    }
-  };
-
   const logout = async () => {
     setLoading(true);
     setError(null);
@@ -150,7 +135,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         registerWithEmail,
         loginWithEmail,
         loginWithGoogle,
-        loginWithGitHub,
         logout,
         clearError,
       }}

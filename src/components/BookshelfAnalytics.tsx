@@ -255,21 +255,21 @@ export const BookshelfAnalytics: React.FC<BookshelfAnalyticsProps> = ({
         <button
           onClick={() => setShowAddForm(!showAddForm)}
           type="button"
-          className="px-4 py-2.5 bg-[#5A7065] hover:bg-[#4A5D4E] text-[#FDFBF7] rounded-xl text-xs font-semibold tracking-wider uppercase transition-colors flex items-center gap-1.5 cursor-pointer shadow-xs w-full sm:w-auto justify-center"
+          className="px-4 py-2.5 bg-[#5A7065] hover:bg-[#4A5D4E] text-[#FDFBF7] rounded-xl text-xs font-semibold uppercase transition-colors flex items-center gap-1.5 cursor-pointer shadow-xs w-full sm:w-auto justify-center"
         >
           <Plus className="w-4.5 h-4.5" />
-          <span>Add Masterpiece</span>
+          <span>add book</span>
         </button>
       </div>
 
       {/* Add Book Sliding/Collapsible Form */}
       {showAddForm && (
         <form onSubmit={handleSubmit} className="bg-white p-6.5 rounded-3xl border border-[#E8EDE9] shadow-md space-y-4 animate-slide-up">
-          <h3 className="text-lg font-serif font-bold text-[#2C1D11] border-b border-[#E8EDE9] pb-2">Add New Book to Shelf</h3>
+          <h3 className="text-lg font-serif font-bold text-[#2C1D11] border-b border-[#E8EDE9] pb-2 lowercase">add new book</h3>
           
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            <div className="space-y-1">
-              <label htmlFor="title-field" className="block text-xxs tracking-wider uppercase font-semibold text-[#5A7065]">Book Title</label>
+            <div className="space-y-1 col-span-1">
+              <label htmlFor="title-field" className="block text-xxs font-semibold text-[#5A7065] lowercase">book title</label>
               <input
                 id="title-field"
                 type="text"
@@ -281,8 +281,8 @@ export const BookshelfAnalytics: React.FC<BookshelfAnalyticsProps> = ({
               />
             </div>
 
-            <div className="space-y-1">
-              <label htmlFor="author-field" className="block text-xxs tracking-wider uppercase font-semibold text-[#5A7065]">Author</label>
+            <div className="space-y-1 col-span-1">
+              <label htmlFor="author-field" className="block text-xxs font-semibold text-[#5A7065] lowercase">author</label>
               <input
                 id="author-field"
                 type="text"
@@ -294,8 +294,8 @@ export const BookshelfAnalytics: React.FC<BookshelfAnalyticsProps> = ({
               />
             </div>
 
-            <div className="space-y-1">
-              <label htmlFor="genre-field" className="block text-xxs tracking-wider uppercase font-semibold text-[#5A7065]">Genre Class</label>
+            <div className="space-y-1 col-span-1">
+              <label htmlFor="genre-field" className="block text-xxs font-semibold text-[#5A7065] lowercase">genre category</label>
               <select
                 id="genre-field"
                 value={genre}
@@ -310,8 +310,8 @@ export const BookshelfAnalytics: React.FC<BookshelfAnalyticsProps> = ({
               </select>
             </div>
 
-            <div className="space-y-1">
-              <label htmlFor="status-field" className="block text-xxs tracking-wider uppercase font-semibold text-[#5A7065]">Sanctuary Status</label>
+            <div className="space-y-1 col-span-1">
+              <label htmlFor="status-field" className="block text-xxs font-semibold text-[#5A7065] lowercase">reading status</label>
               <select
                 id="status-field"
                 value={status}
@@ -324,8 +324,8 @@ export const BookshelfAnalytics: React.FC<BookshelfAnalyticsProps> = ({
               </select>
             </div>
 
-            <div className="space-y-1">
-              <label htmlFor="total-pages-field" className="block text-xxs tracking-wider uppercase font-semibold text-[#5A7065]">Total Pages</label>
+            <div className="space-y-1 col-span-1">
+              <label htmlFor="total-pages-field" className="block text-xxs font-semibold text-[#5A7065] lowercase">total pages</label>
               <input
                 id="total-pages-field"
                 type="number"
@@ -338,8 +338,8 @@ export const BookshelfAnalytics: React.FC<BookshelfAnalyticsProps> = ({
               />
             </div>
 
-            <div className="space-y-1">
-              <label htmlFor="cur-pages-field" className="block text-xxs tracking-wider uppercase font-semibold text-[#5A7065]">Current Page Location</label>
+            <div className="space-y-1 col-span-1">
+              <label htmlFor="cur-pages-field" className="block text-xxs font-semibold text-[#5A7065] lowercase">current page</label>
               <input
                 id="cur-pages-field"
                 type="number"
@@ -352,7 +352,7 @@ export const BookshelfAnalytics: React.FC<BookshelfAnalyticsProps> = ({
             </div>
 
             <div className="space-y-1 md:col-span-2 lg:col-span-3">
-              <label htmlFor="cover-url-field" className="block text-xxs tracking-wider uppercase font-semibold text-[#5A7065]">Cover Image URL (Optional)</label>
+              <label htmlFor="cover-url-field" className="block text-xxs font-semibold text-[#5A7065] lowercase">cover image url (optional)</label>
               <input
                 id="cover-url-field"
                 type="url"
@@ -368,15 +368,15 @@ export const BookshelfAnalytics: React.FC<BookshelfAnalyticsProps> = ({
             <button
               onClick={() => setShowAddForm(false)}
               type="button"
-              className="px-4 py-2 border border-[#E8EDE9] hover:bg-[#FDFBF7] text-xs text-[#5A7065] rounded-xl transition-colors cursor-pointer"
+              className="px-4 py-2 border border-[#E8EDE9] hover:bg-[#FDFBF7] text-xs text-[#5A7065] rounded-xl transition-colors cursor-pointer lowercase"
             >
-              Cancel
+              cancel
             </button>
             <button
               type="submit"
-              className="px-5 py-2 bg-[#2C1D11] hover:bg-[#1E100A] text-[#FDFBF7] text-xs font-semibold rounded-xl transition-colors cursor-pointer"
+              className="px-5 py-2 bg-[#2C1D11] hover:bg-[#1E100A] text-[#FDFBF7] text-xs font-semibold rounded-xl transition-colors cursor-pointer lowercase"
             >
-              Confirm Inscription
+              add book
             </button>
           </div>
         </form>
@@ -387,28 +387,28 @@ export const BookshelfAnalytics: React.FC<BookshelfAnalyticsProps> = ({
         <div className="bg-white p-8 rounded-3xl border border-[#E8EDE9] shadow-sm space-y-6">
           <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 border-b border-[#E8EDE9] pb-4">
             <div>
-              <h3 className="text-xl font-serif text-[#2C1D11] font-semibold">Sanctuary Analytics Suite</h3>
-              <p className="text-xs text-[#5A7065]">An atmospheric, data-backed reflection of reading trends.</p>
+              <h3 className="text-xl font-serif text-[#2C1D11] font-semibold lowercase">reading analytics</h3>
+              <p className="text-xs text-[#5A7065] lowercase">metrics and statistics of your reading progress.</p>
             </div>
 
-            <div className="flex items-center gap-1.5">
+            <div className="flex items-center gap-1.5 font-mono">
               <button
                 onClick={() => setChartMode("progress")}
                 type="button"
-                className={`px-3 py-1.5 text-xxs font-mono rounded-lg transition-all ${
+                className={`px-3 py-1.5 text-xxs rounded-lg transition-all lowercase ${
                   chartMode === "progress" ? "bg-[#5A7065] text-[#FDFBF7]" : "hover:bg-[#F5EFEB] text-[#5A7065]"
                 }`}
               >
-                Progress Volume
+                pages progress
               </button>
               <button
                 onClick={() => setChartMode("genres")}
                 type="button"
-                className={`px-3 py-1.5 text-xxs font-mono rounded-lg transition-all ${
+                className={`px-3 py-1.5 text-xxs rounded-lg transition-all lowercase ${
                   chartMode === "genres" ? "bg-[#5A7065] text-[#FDFBF7]" : "hover:bg-[#F5EFEB] text-[#5A7065]"
                 }`}
               >
-                Genre Breakdown
+                genre breakdown
               </button>
             </div>
           </div>
@@ -429,9 +429,9 @@ export const BookshelfAnalytics: React.FC<BookshelfAnalyticsProps> = ({
         /* Bookshelf Cards Display Area */
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {filteredBooks.length === 0 ? (
-            <div className="md:col-span-2 bg-[#FDFBF7] py-16 text-center border-2 border-dashed border-[#E8EDE9] rounded-3xl text-sm italic text-[#5A7065] space-y-2">
+            <div className="md:col-span-2 bg-[#FDFBF7] py-16 text-center border-2 border-dashed border-[#E8EDE9] rounded-3xl text-sm italic text-[#5A7065] space-y-2 lowercase">
               <BookOpen className="w-8 h-8 text-[#A3B5A9] mx-auto animate-pulse" />
-              <p>No books residing in '{activeTab}' at present. Inscribe one today!</p>
+              <p>no books in this category yet. add your first book!</p>
             </div>
           ) : (
             filteredBooks.map((book) => {

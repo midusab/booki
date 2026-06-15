@@ -110,17 +110,17 @@ export const SmartDashboard: React.FC<SmartDashboardProps> = ({
           </div>
           
           <div className="space-y-5 relative z-10 max-w-[85%] lg:max-w-[70%]">
-            <div className="inline-flex items-center gap-2 bg-[#F40009]/15 text-[#FFEBEB] px-3.5 py-1.5 rounded-full text-xs font-semibold tracking-wide border border-[#F40009]/35">
+            <div className="inline-flex items-center gap-2 bg-[#F40009]/15 text-[#FFEBEB] px-3.5 py-1.5 rounded-full text-xs font-semibold border border-[#F40009]/35">
               <Sparkles className="w-3.5 h-3.5 text-[#F40009]" />
-              <span className="uppercase tracking-wider">Midusa Reads Sanctuary</span>
+              <span className="uppercase tracking-wider font-mono text-[10px]">Midusa Reads Stats</span>
             </div>
 
             <div className="space-y-1">
-              <h1 className="text-3xl md:text-4xl font-black tracking-tight text-[#FFFDF9] font-serif">
+              <h1 className="text-3xl md:text-4xl font-black tracking-tight text-[#FFFDF9] font-serif uppercase">
                 Midusa Reads
               </h1>
-              <p className="text-xs text-[#FFEBEB]/80 uppercase tracking-widest font-mono">
-                An Apple SF Designed Reading Community
+              <p className="text-xs text-[#FFEBEB]/80 font-mono uppercase tracking-wider">
+                Your Reading Achievements and Metrics
               </p>
             </div>
             
@@ -168,10 +168,10 @@ export const SmartDashboard: React.FC<SmartDashboardProps> = ({
           </div>
 
           <div className="mt-6 flex justify-between items-center relative z-10 border-t border-[#FFFDF9]/10 pt-4">
-            <span className="text-[10px] text-[#FFEBEB]/50 font-mono tracking-wider">LOCAL COCA-COLA RED THEMETABLE</span>
+            <span className="text-[10px] text-[#FFEBEB]/50 font-mono uppercase">MidR... Dashboard</span>
             <span className="text-[10px] text-[#FFEBEB]/70 hover:text-[#F40009] font-medium flex items-center gap-1.5 cursor-default">
               <Bookmark className="w-3.5 h-3.5 text-[#F40009]" />
-              <span>SF font rendering matches active device</span>
+              <span className="uppercase tracking-wider text-[9px]">Fonts render with your local active device</span>
             </span>
           </div>
         </div>
@@ -183,9 +183,9 @@ export const SmartDashboard: React.FC<SmartDashboardProps> = ({
           </div>
 
           <div className="space-y-2">
-            <span className="text-xxs tracking-widest text-[#F40009] uppercase font-mono font-bold block">Sanctuary Diligence</span>
-            <h2 className="text-xl font-bold text-[#1B0203]">Active Reading Streak</h2>
-            <p className="text-xs text-gray-500">Keep your flame burning bright by completing at least {targetPages} pages daily.</p>
+            <span className="text-xxs text-[#F40009] font-mono font-bold block uppercase tracking-wider">Reading Diligence</span>
+            <h2 className="text-xl font-bold text-[#1B0203] uppercase tracking-wide">Active Reading Streak</h2>
+            <p className="text-xs text-gray-500">Save your streak by reading at least {targetPages} pages daily.</p>
           </div>
 
           <div className="my-6 flex items-center justify-center gap-4">
@@ -193,7 +193,7 @@ export const SmartDashboard: React.FC<SmartDashboardProps> = ({
               <span className="text-5xl font-black text-[#1B0203] block tracking-tighter">
                 {readingStreak}
               </span>
-              <span className="text-[10px] tracking-wider uppercase text-gray-500 font-bold block mt-1">Days Active</span>
+              <span className="text-[10px] text-gray-500 font-bold block mt-1 uppercase">Days Active</span>
             </div>
             <div className="h-10 w-px bg-[#FFEBEB]"></div>
             <div className="text-sm text-[#1B0203] space-y-1">
@@ -330,8 +330,8 @@ export const SmartDashboard: React.FC<SmartDashboardProps> = ({
             {/* Conditional Dropdown for selecting which active read was read */}
             {activeBooks.length > 0 && (
               <div>
-                <label htmlFor="log-book-select" className="block text-[10px] font-bold text-[#1B0203] uppercase tracking-wide mb-1">
-                  Which active book did you read?
+                <label htmlFor="log-book-select" className="block text-[10px] font-bold text-[#1B0203] tracking-wide mb-1 uppercase">
+                  Which book did you read?
                 </label>
                 <select
                   id="log-book-select"
@@ -349,8 +349,8 @@ export const SmartDashboard: React.FC<SmartDashboardProps> = ({
             )}
 
             <div>
-              <label htmlFor="pages-input-field" className="block text-[10px] font-bold text-[#1B0203] uppercase tracking-wide mb-1">
-                Amount of Pages Read
+              <label htmlFor="pages-input-field" className="block text-[10px] font-bold text-[#1B0203] tracking-wide mb-1 uppercase">
+                Amount of pages read
               </label>
               <input
                 id="pages-input-field"
@@ -365,17 +365,17 @@ export const SmartDashboard: React.FC<SmartDashboardProps> = ({
 
             <button
               type="submit"
-              className="w-full bg-[#F40009] hover:bg-[#C30015] text-white font-bold text-xs tracking-wider uppercase py-3 rounded-2xl transition-all flex items-center justify-center gap-2 cursor-pointer shadow-md transform hover:-translate-y-0.5 active:translate-y-0"
+              className="w-full bg-[#F40009] hover:bg-[#C30015] text-white font-bold text-xs py-3 rounded-2xl transition-all flex items-center justify-center gap-2 cursor-pointer shadow-md transform hover:-translate-y-0.5 active:translate-y-0"
             >
               <BookOpen className="w-4 h-4" />
-              <span>Record & Sync Progress</span>
+              <span>SAVE PROGRESS</span>
             </button>
           </form>
 
           <div className="flex items-center gap-3 bg-[#FFFDFD] p-3 rounded-2xl border border-[#FFEBEB]">
             <Layers className="w-5 h-5 text-[#F40009]" />
             <div className="text-xs">
-              <span className="font-bold block text-[#1B0203]">Tracked Library Stems</span>
+              <span className="font-bold block text-[#1B0203] uppercase">Tracked Active Books</span>
               <span className="text-gray-500">Managing {booksInProgress} active book(s)</span>
             </div>
           </div>

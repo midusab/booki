@@ -24,11 +24,11 @@ export const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
           <div className="absolute inset-x-0 bottom-0 h-1/2 bg-[#FDFBF7]"></div>
         </div>
         <div className="text-center space-y-1">
-          <h1 className="font-serif text-lg font-black tracking-widest text-[#F40009] uppercase">
-            MidR...
+          <h1 className="font-serif text-lg font-black tracking-widest text-[#F40009] lowercase">
+            midr...
           </h1>
-          <p className="text-[10px] tracking-widest font-mono text-gray-400 uppercase">
-            Decompressing Sanctuary Stems
+          <p className="text-[10px] tracking-widest font-mono text-gray-400 lowercase">
+            loading your library...
           </p>
         </div>
       </div>

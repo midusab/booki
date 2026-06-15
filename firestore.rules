@@ -11,22 +11,27 @@ service cloud.firestore {
       return request.auth != null;
     }
 
-    // Guard user profile
     function isOwner(userId) {
       return isSignedIn() && request.auth.uid == userId;
+    }
+
+    function isValidId(id) {
+      return id is string && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$');
     }
 
     function isValidUser(data) {
       return data.uid is string 
           && data.uid.size() <= 128
-          && data.email is string
-          && data.email.size() <= 256;
+          && (data.email == null || (data.email is string && data.email.size() <= 256))
+          && (data.displayName == null || (data.displayName is string && data.displayName.size() <= 256))
+          && (data.photoURL == null || (data.photoURL is string && data.photoURL.size() <= 2048))
+          && (data.createdAt == null || data.createdAt is string);
     }
 
     match /users/{userId} {
       allow get: if isOwner(userId);
-      allow create: if isOwner(userId) && isValidUser(request.resource.data);
-      allow update: if isOwner(userId) && isValidUser(request.resource.data);
+      allow create: if isOwner(userId) && isValidId(userId) && isValidUser(request.resource.data);
+      allow update: if isOwner(userId) && isValidId(userId) && isValidUser(request.resource.data);
       allow delete: if false;
     }
   }
