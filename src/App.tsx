@@ -21,10 +21,14 @@ import {
   MessageSquare, 
   Menu, 
   X,
-  Compass
+  Compass,
+  LogOut
 } from "lucide-react";
+import { useAuth } from "./features/auth/hooks/useAuth";
 
 export default function App() {
+  const { user, logout } = useAuth();
+
   // Main states
   const [readingStreak, setReadingStreak] = useState<number>(5); // default pre-populate 5 based on user prompt
   const [dailyPagesRead, setDailyPagesRead] = useState<number>(22);
@@ -316,6 +320,35 @@ export default function App() {
             <span className="text-gray-600 font-serif font-semibold">Streak: {readingStreak}d</span>
           </div>
 
+          {/* User Profile Pill & Logout (Desktop) */}
+          <div className="hidden lg:flex items-center gap-3">
+            {user && (
+              <div className="flex items-center gap-2.5 bg-[#FFEBEB]/20 border border-[#FFEBEB] pl-2.5 pr-4 py-1.5 rounded-2xl">
+                <img 
+                  src={user.photoURL || "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&q=80&w=150"} 
+                  alt={user.displayName || "Member"}
+                  className="w-7 h-7 rounded-full object-cover border border-[#F40009]/20"
+                  referrerPolicy="no-referrer"
+                />
+                <div className="min-w-0">
+                  <span className="text-[8px] uppercase tracking-wider text-gray-400 font-mono font-bold block leading-none">Bibliophile</span>
+                  <span className="text-[#1B0203] block truncate max-w-[100px] leading-tight mt-0.5 text-xs font-bold font-serif">
+                    {user.displayName || user.email?.split("@")[0]}
+                  </span>
+                </div>
+              </div>
+            )}
+            
+            <button
+              onClick={logout}
+              type="button"
+              className="p-2.5 rounded-2xl bg-[#FFEBEB]/40 hover:bg-[#FFEBEB] text-[#F40009] border border-[#FFEBEB] hover:border-[#F40009]/20 transition-all cursor-pointer flex items-center justify-center shadow-2xs"
+              title="Sign out of Sanctuary"
+            >
+              <LogOut className="w-4 h-4" />
+            </button>
+          </div>
+
           {/* Mobile menu toggle */}
           <button
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
@@ -379,6 +412,34 @@ export default function App() {
               <MessageSquare className="w-4 h-4" />
               <span>Discussion Feed Forum</span>
             </button>
+
+            {/* Mobile User Profile & LogOut */}
+            <div className="mt-4 pt-4 border-t border-[#FFEBEB] flex items-center justify-between">
+              {user && (
+                <div className="flex items-center gap-2.5">
+                  <img 
+                    src={user.photoURL || "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&q=80&w=150"} 
+                    alt={user.displayName || "Member"}
+                    className="w-8 h-8 rounded-full object-cover border border-[#F40009]/20"
+                    referrerPolicy="no-referrer"
+                  />
+                  <div>
+                    <span className="text-[8px] uppercase tracking-wider text-gray-400 font-mono block leading-none">MEMBER PASSPORT</span>
+                    <span className="text-xs font-bold text-[#1B0203] block mt-1 leading-none font-serif">
+                      {user.displayName || user.email?.split("@")[0]}
+                    </span>
+                  </div>
+                </div>
+              )}
+              <button
+                onClick={logout}
+                type="button"
+                className="px-3.5 py-2.5 bg-[#FFEBEB]/60 hover:bg-[#FFEBEB] hover:text-[#B80006] text-[#F40009] text-xxxxs uppercase tracking-widest font-mono font-bold rounded-xl border border-[#FFEBEB] cursor-pointer transition-all flex items-center gap-1.5"
+              >
+                <LogOut className="w-3.5 h-3.5" />
+                <span>Log out</span>
+              </button>
+            </div>
           </nav>
         )}
       </header>
@@ -395,8 +456,6 @@ export default function App() {
             setDailyPagesRead={setDailyPagesRead}
             incrementStreak={handleIncrementStreak}
             books={books}
-            badges={badges}
-            onUnlockBadge={handleUnlockBadge}
             onUpdateBookProgress={handleUpdateBookProgress}
           />
         )}

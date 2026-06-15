@@ -4,12 +4,11 @@
  */
 
 import React, { useState, useEffect } from "react";
-import { Book, ReadingBadge } from "../types";
+import { Book } from "../types";
 import { MOTIVATIONAL_QUOTES, SCHED_MEETING } from "../data";
 import { 
   Flame, 
   Sparkles, 
-  Award, 
   Calendar, 
   Plus, 
   Check, 
@@ -28,8 +27,6 @@ interface SmartDashboardProps {
   setDailyPagesRead: (pages: number | ((prev: number) => number)) => void;
   incrementStreak: () => void;
   books: Book[];
-  badges: ReadingBadge[];
-  onUnlockBadge: (id: string) => void;
   onUpdateBookProgress?: (id: string, currentPage: number) => void;
 }
 
@@ -39,7 +36,6 @@ export const SmartDashboard: React.FC<SmartDashboardProps> = ({
   setDailyPagesRead,
   incrementStreak,
   books,
-  badges,
   onUpdateBookProgress,
 }) => {
   const [quoteIndex, setQuoteIndex] = useState(0);
@@ -416,52 +412,6 @@ export const SmartDashboard: React.FC<SmartDashboardProps> = ({
           <div className="text-xs py-2 px-3 bg-[#FFEBEB]/40 rounded-xl flex items-center justify-between text-gray-600">
             <span>Platform: <strong className="text-[#1B0203]">{SCHED_MEETING.platform}</strong></span>
           </div>
-        </div>
-      </div>
-
-      {/* Elegant Digital Reading Badges Display */}
-      <div className="bg-white p-8 rounded-3xl border border-[#FFEBEB] shadow-sm">
-        <div className="flex items-center gap-3 mb-6">
-          <div className="p-2 bg-[#FFEBEB] rounded-xl text-[#F40009]">
-            <Award className="w-5 h-5" />
-          </div>
-          <div>
-            <h3 className="text-lg font-bold text-[#1B0203]">Unlocked Digital Badges</h3>
-            <p className="text-xs text-gray-400">Your structural milestones validated inside Midusa Reads.</p>
-          </div>
-        </div>
-
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-          {badges.map((badge) => (
-            <div
-              key={badge.id}
-              className={`p-5 rounded-2xl flex items-center gap-4 border transition-all ${
-                badge.unlocked
-                  ? "bg-[#FFFDFD] border-[#F40009]/30 shadow-xs relative ring-1 ring-[#F40009]/5"
-                  : "bg-white border-[#FFEBEB] opacity-55 grayscale"
-              }`}
-            >
-              <div className="text-3xl filter drop-shadow-xs">{badge.unlocked ? badge.icon : "🔒"}</div>
-              <div className="space-y-1">
-                <span className="text-xs font-bold text-[#1B0203] block leading-tight">
-                  {badge.title}
-                </span>
-                <span className="text-xxs text-gray-400 block leading-relaxed">
-                  {badge.description}
-                </span>
-                {badge.unlocked && badge.unlockedAt && (
-                   <span className="text-xxxxs tracking-wider uppercase font-mono text-[#F40009] font-bold block">
-                    Unlocked: {badge.unlockedAt}
-                  </span>
-                )}
-              </div>
-              {badge.unlocked && (
-                <span className="absolute top-2 right-2 bg-[#F40009]/10 text-[#F40009] text-xxxxs w-4 h-4 rounded-full flex items-center justify-center font-bold">
-                  ✓
-                </span>
-              )}
-            </div>
-          ))}
         </div>
       </div>
     </div>
