@@ -228,92 +228,92 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen bg-[#FDFBF7] text-[#2C1D11] font-sans flex flex-col justify-between">
+    <div className="min-h-screen bg-bg-cream text-accent-espresso font-sans flex flex-col justify-between">
       
       {/* Luxury Brand Header */}
-      <header className="sticky top-0 z-40 bg-[#FDFBF7]/85 backdrop-blur-md border-b border-[#E8EDE9] py-4.5 px-6 md:px-12">
+      <header className="sticky top-0 z-40 bg-bg-cream/85 backdrop-blur-md border-b border-[#FFEBEB] py-4.5 px-6 md:px-12">
         <div className="max-w-7xl mx-auto flex items-center justify-between">
           <div className="flex items-center gap-2.5">
-            <span className="text-2xl tracking-normal text-[#C5A03A]">✨</span>
+            <span className="text-2xl tracking-normal text-[#F40009]">📚</span>
             <div>
-              <span className="font-serif text-3xl font-black tracking-wider text-[#2C1D11] block leading-none">
-                SAGA
+              <span className="font-serif text-3xl font-black tracking-wider text-[#F40009] block leading-none">
+                MidR...
               </span>
-              <span className="text-[9px] tracking-widest text-[#5A7065] uppercase font-mono block mt-1">
-                IMMERSIVE CLUB SANCTUARY
+              <span className="text-[9px] tracking-widest text-gray-500 uppercase font-mono block mt-1">
+                IMMERSIVE READER SANCTUARY
               </span>
             </div>
           </div>
 
           {/* Desktop Nav Actions */}
-          <nav className="hidden lg:flex items-center gap-1 bg-[#F5EFEB] p-1 rounded-2xl border border-[#E8EDE9]">
+          <nav className="hidden lg:flex items-center gap-1 bg-[#FFEBEB]/40 p-1 rounded-2xl border border-[#FFEBEB]">
             <button
               onClick={() => setCurrentView("dashboard")}
               type="button"
               className={`px-4.5 py-2.5 rounded-xl text-xs font-semibold tracking-wide transition-all cursor-pointer flex items-center gap-1.5 ${
                 currentView === "dashboard"
-                  ? "bg-white text-[#2C1D11] shadow-xs"
-                  : "text-[#5A7065] hover:text-[#2C1D11]"
+                  ? "bg-white text-[#1B0203] shadow-xs"
+                  : "text-gray-500 hover:text-[#1B0203]"
               }`}
             >
-              <Compass className="w-4 h-4 text-[#C5A03A]" />
-              <span>Temple</span>
+              <Compass className="w-4 h-4 text-[#F40009]" />
+              <span>Sanctuary</span>
             </button>
             <button
               onClick={() => setCurrentView("bookshelf")}
               type="button"
               className={`px-4.5 py-2.5 rounded-xl text-xs font-semibold tracking-wide transition-all cursor-pointer flex items-center gap-1.5 ${
                 currentView === "bookshelf"
-                  ? "bg-white text-[#2C1D11] shadow-xs"
-                  : "text-[#5A7065] hover:text-[#2C1D11]"
+                  ? "bg-white text-[#1B0203] shadow-xs"
+                  : "text-gray-500 hover:text-[#1B0203]"
               }`}
             >
-              <BookOpen className="w-4 h-4 text-[#C5A03A]" />
-              <span>Library & Report</span>
+              <BookOpen className="w-4 h-4 text-[#F40009]" />
+              <span>Library & Progress</span>
             </button>
             <button
               onClick={() => setCurrentView("timer")}
               type="button"
               className={`px-4.5 py-2.5 rounded-xl text-xs font-semibold tracking-wide transition-all cursor-pointer flex items-center gap-1.5 ${
                 currentView === "timer"
-                  ? "bg-white text-[#2C1D11] shadow-xs"
-                  : "text-[#5A7065] hover:text-[#2C1D11]"
+                  ? "bg-white text-[#1B0203] shadow-xs"
+                  : "text-gray-500 hover:text-[#1B0203]"
               }`}
             >
-              <Clock className="w-4 h-4 text-[#C5A03A]" />
-              <span>Acoustic Room</span>
+              <Clock className="w-4 h-4 text-[#F40009]" />
+              <span>Pomodoro focus</span>
             </button>
             <button
               onClick={() => setCurrentView("chat")}
               type="button"
               className={`px-4.5 py-2.5 rounded-xl text-xs font-semibold tracking-wide transition-all cursor-pointer flex items-center gap-1.5 ${
                 currentView === "chat"
-                  ? "bg-white text-[#2C1D11] shadow-xs"
-                  : "text-[#5A7065] hover:text-[#2C1D11]"
+                  ? "bg-white text-[#1B0203] shadow-xs"
+                  : "text-gray-500 hover:text-[#1B0203]"
               }`}
             >
-              <Sparkles className="w-4 h-4 text-[#C5A03A]" />
-              <span>Saga Oracle</span>
+              <Sparkles className="w-4 h-4 text-[#F40009]" />
+              <span>Oracle Companion</span>
             </button>
             <button
               onClick={() => setCurrentView("lounge")}
               type="button"
               className={`px-4.5 py-2.5 rounded-xl text-xs font-semibold tracking-wide transition-all cursor-pointer flex items-center gap-1.5 ${
                 currentView === "lounge"
-                  ? "bg-white text-[#2C1D11] shadow-xs"
-                  : "text-[#5A7065] hover:text-[#2C1D11]"
+                  ? "bg-white text-[#1B0203] shadow-xs"
+                  : "text-gray-500 hover:text-[#1B0203]"
               }`}
             >
-              <MessageSquare className="w-4 h-4 text-[#C5A03A]" />
-              <span>Discussion Lounge</span>
+              <MessageSquare className="w-4 h-4 text-[#F40009]" />
+              <span>Discussion Feed</span>
             </button>
           </nav>
-
+ 
           {/* Quick Stats Pillar */}
-          <div className="hidden lg:flex items-center gap-3 bg-[#E8EDE9]/50 border border-[#D5DDD7] px-4 py-2 rounded-2xl text-xs">
-            <span className="text-emerald-800 font-mono font-bold tracking-wide">● Active Hub</span>
-            <div className="w-px h-3.5 bg-[#D5DDD7]"></div>
-            <span className="text-[#5A7065] font-serif font-semibold">Streak: {readingStreak}d</span>
+          <div className="hidden lg:flex items-center gap-3 bg-[#FFEBEB]/40 border border-[#FFEBEB] px-4 py-2 rounded-2xl text-xs">
+            <span className="text-[#F40009] font-mono font-bold tracking-wide">● Active Sanctuary</span>
+            <div className="w-px h-3.5 bg-[#FFEBEB]"></div>
+            <span className="text-gray-600 font-serif font-semibold">Streak: {readingStreak}d</span>
           </div>
 
           {/* Mobile menu toggle */}
@@ -328,56 +328,56 @@ export default function App() {
 
         {/* Mobile Dropdown Options */}
         {isMobileMenuOpen && (
-          <nav className="lg:hidden mt-4 pt-3.5 border-t border-[#E8EDE9] flex flex-col gap-2 animate-slide-up">
+          <nav className="lg:hidden mt-4 pt-3.5 border-t border-[#FFEBEB] flex flex-col gap-2 animate-slide-up">
             <button
               onClick={() => { setCurrentView("dashboard"); setIsMobileMenuOpen(false); }}
               type="button"
-              className={`px-4 py-3 rounded-xl text-xs font-semibold tracking-wide text-left flex items-center gap-2 ${
-                currentView === "dashboard" ? "bg-[#2C1D11] text-[#FDFBF7]" : "text-[#5A7065]"
+              className={`px-4 py-3 rounded-xl text-xs font-semibold tracking-wide text-left flex items-center gap-2 transition-colors ${
+                currentView === "dashboard" ? "bg-[#F40009] text-white" : "text-gray-500 hover:bg-[#FFEBEB]/40"
               }`}
             >
               <Compass className="w-4 h-4" />
-              <span>Sanctuary Temple</span>
+              <span>Sanctuary Dashboard</span>
             </button>
             <button
               onClick={() => { setCurrentView("bookshelf"); setIsMobileMenuOpen(false); }}
               type="button"
-              className={`px-4 py-3 rounded-xl text-xs font-semibold tracking-wide text-left flex items-center gap-2 ${
-                currentView === "bookshelf" ? "bg-[#2C1D11] text-[#FDFBF7]" : "text-[#5A7065]"
+              className={`px-4 py-3 rounded-xl text-xs font-semibold tracking-wide text-left flex items-center gap-2 transition-colors ${
+                currentView === "bookshelf" ? "bg-[#F40009] text-white" : "text-gray-500 hover:bg-[#FFEBEB]/40"
               }`}
             >
               <BookOpen className="w-4 h-4" />
-              <span>Library & Report</span>
+              <span>Library & Progress</span>
             </button>
             <button
               onClick={() => { setCurrentView("timer"); setIsMobileMenuOpen(false); }}
               type="button"
-              className={`px-4 py-3 rounded-xl text-xs font-semibold tracking-wide text-left flex items-center gap-2 ${
-                currentView === "timer" ? "bg-[#2C1D11] text-[#FDFBF7]" : "text-[#5A7065]"
+              className={`px-4 py-3 rounded-xl text-xs font-semibold tracking-wide text-left flex items-center gap-2 transition-colors ${
+                currentView === "timer" ? "bg-[#F40009] text-white" : "text-gray-500 hover:bg-[#FFEBEB]/40"
               }`}
             >
               <Clock className="w-4 h-4" />
-              <span>Acoustic Room Timer</span>
+              <span>Pomodoro Focus Room</span>
             </button>
             <button
               onClick={() => { setCurrentView("chat"); setIsMobileMenuOpen(false); }}
               type="button"
-              className={`px-4 py-3 rounded-xl text-xs font-semibold tracking-wide text-left flex items-center gap-2 ${
-                currentView === "chat" ? "bg-[#2C1D11] text-[#FDFBF7]" : "text-[#5A7065]"
+              className={`px-4 py-3 rounded-xl text-xs font-semibold tracking-wide text-left flex items-center gap-2 transition-colors ${
+                currentView === "chat" ? "bg-[#F40009] text-white" : "text-gray-500 hover:bg-[#FFEBEB]/40"
               }`}
             >
               <Sparkles className="w-4 h-4" />
-              <span>Saga Oracle Chat</span>
+              <span>Oracle Companion Chat</span>
             </button>
             <button
               onClick={() => { setCurrentView("lounge"); setIsMobileMenuOpen(false); }}
               type="button"
-              className={`px-4 py-3 rounded-xl text-xs font-semibold tracking-wide text-left flex items-center gap-2 ${
-                currentView === "lounge" ? "bg-[#2C1D11] text-[#FDFBF7]" : "text-[#5A7065]"
+              className={`px-4 py-3 rounded-xl text-xs font-semibold tracking-wide text-left flex items-center gap-2 transition-colors ${
+                currentView === "lounge" ? "bg-[#F40009] text-white" : "text-gray-500 hover:bg-[#FFEBEB]/40"
               }`}
             >
               <MessageSquare className="w-4 h-4" />
-              <span>Discussion Lounge Forum</span>
+              <span>Discussion Feed Forum</span>
             </button>
           </nav>
         )}
@@ -397,6 +397,7 @@ export default function App() {
             books={books}
             badges={badges}
             onUnlockBadge={handleUnlockBadge}
+            onUpdateBookProgress={handleUpdateBookProgress}
           />
         )}
 
@@ -410,7 +411,10 @@ export default function App() {
         )}
 
         {currentView === "timer" && (
-          <AmbientReadingRoom />
+          <AmbientReadingRoom 
+            books={books}
+            onUpdateBookProgress={handleUpdateBookProgress}
+          />
         )}
 
         {currentView === "chat" && (

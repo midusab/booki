@@ -1,6 +1,6 @@
 {
-  "name": "Saga",
-  "description": "A luxury, immersive digital sanctuary for modern book clubs featuring an interactive reading room, AI book companion, and discussion lounge.",
+  "name": "Midusa Reads",
+  "description": "An immersive, luxury reader sanctuary featuring beautiful Cocacola Red aesthetics, Pomodoro tracking, active reads, and a daily book club discussion feed.",
   "requestFramePermissions": [],
   "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
 }

@@ -14,7 +14,7 @@ export const BookCompanionChat: React.FC = () => {
 
   // Load chat logs or set initial greeting welcome
   useEffect(() => {
-    const saved = localStorage.getItem("saga_chat_history");
+    const saved = localStorage.getItem("midusa_chat_history");
     if (saved) {
       setMessages(JSON.parse(saved));
     } else {
@@ -22,7 +22,7 @@ export const BookCompanionChat: React.FC = () => {
         {
           id: "msg-1",
           sender: "saga",
-          text: "Greetings, bibliophile. I am Saga AI, your digital library oracle. I can help summarize any book in our collection, construct mind-bending discussion questions, or recommend your next masterpiece. What shall we explore together today?",
+          text: "Greetings, bibliophile. I am Midusa AI, your digital library oracle. I can help summarize any book in our collection, construct mind-bending discussion questions, or recommend your next masterpiece. What shall we explore together today?",
           timestamp: new Date().toISOString(),
           suggestedPrompts: [
             "Summarize 'The Midnight Library'",
@@ -33,14 +33,14 @@ export const BookCompanionChat: React.FC = () => {
         },
       ];
       setMessages(initial);
-      localStorage.setItem("saga_chat_history", JSON.stringify(initial));
+      localStorage.setItem("midusa_chat_history", JSON.stringify(initial));
     }
   }, []);
 
   // Save changes to localStorage
   useEffect(() => {
     if (messages.length > 0) {
-      localStorage.setItem("saga_chat_history", JSON.stringify(messages));
+      localStorage.setItem("midusa_chat_history", JSON.stringify(messages));
     }
     scrollToBottom();
   }, [messages]);
@@ -63,7 +63,7 @@ export const BookCompanionChat: React.FC = () => {
       if (text.includes("klara")) {
         return `### ☀️ Summary: *Klara and the Sun* by Kazuo Ishiguro\n\nNarrated by Klara, an Artificial Friend with outstanding observational qualities, this quiet, poetic masterpiece explores her devotion to Josie, a sick teenager she is purchased to companion.\n\n**Key Discussion Strands:**\n1. **What is Love?** Can an artificial being possess a soul, or are they just matching algorithms?\n2. **The Sun as Deity:** Klara's beautiful, naive belief in the healing power of solar light.\n3. **Class Divisions:** High-stakes genetics, tutoring, and emotional substitution.\n\n*A gorgeous book choice for introducing ethical dilemmas around AI!*`;
       }
-      return `### 📚 Saga library Summaries\n\nI can summarize any book you are reading! Here are summaries we frequently analyze in the Sanctuary:\n- **The Midnight Library** (Regrets, multi-verses, second chances)\n- **Dune** (Ecology, mysticism, leadership boundaries)\n- **Klara and the Sun** (Artificial companionship, love, devotion)\n\n*Simply type: 'Summarize [Book Title]' or tell me any genre you are currently focusing on.*`;
+      return `### 📚 Midusa reads summaries\n\nI can summarize any book you are reading! Here are summaries we frequently analyze in the Sanctuary:\n- **The Midnight Library** (Regrets, multi-verses, second chances)\n- **Dune** (Ecology, mysticism, leadership boundaries)\n- **Klara and the Sun** (Artificial companionship, love, devotion)\n\n*Simply type: 'Summarize [Book Title]' or tell me any genre you are currently focusing on.*`;
     }
 
     // Prompts / list triggers
@@ -73,7 +73,7 @@ export const BookCompanionChat: React.FC = () => {
       else if (text.includes("midnight")) bookName = "The Midnight Library";
       else if (text.includes("klara")) bookName = "Klara and the Sun";
 
-      return `### 🏺 Discussion Prompts for *${bookName}*\n\nHere are 4 highly evocative prompts for your next Saga lounge discussion: \n\n1. **The Moral Pivot:** If you stood in the protagonist's shoes, would you have made the same choice, or did their pride dictate their downfall? \n2. **Socio-Ecological Mirrors:** How does the setting of the book act as an active character, influencing the psychological state of the cast?\n3. **Aesthetic & Vibe Match:** Which of Saga's discussion vibes (e.g., *Mind-Bending* or *Poetic*) best matches this chapter, and why?\n4. **Personal Revelation:** Did a specific passage make you reflect on a choice or relationship in your own life?\n\n*Feel free to copy-paste these straight into the Discussion Lounge!*`;
+      return `### 🏺 Discussion Prompts for *${bookName}*\n\nHere are 4 highly evocative prompts for your next Midusa reads lounge discussion: \n\n1. **The Moral Pivot:** If you stood in the protagonist's shoes, would you have made the same choice, or did their pride dictate their downfall? \n2. **Socio-Ecological Mirrors:** How does the setting of the book act as an active character, influencing the psychological state of the cast?\n3. **Aesthetic & Vibe Match:** Which of Midusa's discussion vibes (e.g., *Mind-Bending* or *Poetic*) best matches this chapter, and why?\n4. **Personal Revelation:** Did a specific passage make you reflect on a choice or relationship in your own life?\n\n*Feel free to copy-paste these straight into the Discussion Lounge!*`;
     }
 
     // Recommendations triggers
@@ -96,7 +96,7 @@ export const BookCompanionChat: React.FC = () => {
     }
 
     // Default response
-    return `### 🏛️ Saga Book Companion guidance\n\nI have parsed your request, but I want to make sure I deliver absolute literary precision. I am fully versed in:\n\n- **Detailed Summaries:** (Ask: *"Summarize Klara and the Sun"*\n- **Bespoke Recommendations:** (Ask: *"Recommend me a sci-fi book"* or *"What thriller is trending?"*)\n- **Discussion Lounge Starters:** (Ask: *"Give me Dune discussion questions"*)\n\nWhat literary sanctuary choice can I curate next?`;
+    return `### 🏛️ Midusa Reads Companion guidance\n\nI have parsed your request, but I want to make sure I deliver absolute literary precision. I am fully versed in:\n\n- **Detailed Summaries:** (Ask: *"Summarize Klara and the Sun"*\n- **Bespoke Recommendations:** (Ask: *"Recommend me a sci-fi book"* or *"What thriller is trending?"*)\n- **Discussion Lounge Starters:** (Ask: *"Give me Dune discussion questions"*)\n\nWhat literary sanctuary choice can I curate next?`;
   };
 
   const handleSend = (textToSend: string) => {
@@ -118,7 +118,7 @@ export const BookCompanionChat: React.FC = () => {
     const typingMsg: ChatMessage = {
       id: typingId,
       sender: "saga",
-      text: "Consulting Saga's extensive literary archive...",
+      text: "Consulting Midusa's extensive literary archive...",
       timestamp: new Date().toISOString(),
       isTyping: true,
     };
@@ -183,19 +183,19 @@ export const BookCompanionChat: React.FC = () => {
     <div id="saga-ai-chat" className="bg-white rounded-3xl border border-[#E8EDE9] shadow-sm flex flex-col h-[650px] overflow-hidden animate-fade-in">
       
       {/* Header Banner */}
-      <div className="bg-gradient-to-r from-[#1E100A] to-[#2C1D11] text-[#FDFBF7] p-5.5 flex items-center justify-between border-b border-[#C5A03A]/20">
+      <div className="bg-gradient-to-r from-[#3C0002] to-[#1F0001] text-[#FDFBF7] p-5.5 flex items-center justify-between border-b border-[#F40009]/20">
         <div className="flex items-center gap-3">
-          <div className="w-9 h-9 rounded-full bg-[#C5A03A]/20 border border-[#C5A03A]/40 flex items-center justify-center text-[#EADEBE] animate-pulse">
-            <Sparkles className="w-4.5 h-4.5 text-[#C5A03A]" />
+          <div className="w-9 h-9 rounded-full bg-[#F40009]/20 border border-[#F40009]/40 flex items-center justify-center text-[#FFEBEB] animate-pulse">
+            <Sparkles className="w-4.5 h-4.5 text-[#F40009]" />
           </div>
           <div>
-            <h3 className="text-sm tracking-wide font-serif font-bold text-[#FFFDF9]">Saga AI Companion</h3>
-            <span className="text-xxxxs tracking-wider uppercase text-[#EADEBE]/80 block font-mono">
-              Offline Literary Oracle • Actively Synthesized
+            <h3 className="text-sm tracking-wide font-serif font-bold text-[#FFFDF9]">Midusa AI Companion</h3>
+            <span className="text-xxxxs tracking-wider uppercase text-[#FFEBEB]/80 block font-mono">
+              Offline Literary Companion • Actively Synthesized
             </span>
           </div>
         </div>
-        <span className="bg-[#C5A03A]/20 text-[#EADEBE] font-mono text-xxxxs px-2.5 py-1 rounded-full border border-[#C5A03A]/40">
+        <span className="bg-[#F40009]/20 text-[#FFEBEB] font-mono text-xxxxs px-2.5 py-1 rounded-full border border-[#F40009]/40">
           SENSING ACTIVE
         </span>
       </div>
@@ -212,10 +212,10 @@ export const BookCompanionChat: React.FC = () => {
               {/* Avatar Icon */}
               <div 
                 className={`w-8 h-8 rounded-full flex items-center justify-center shrink-0 ${
-                  isMe ? "bg-[#2C1D11] text-[#FDFBF7]" : "bg-[#5A7065] text-[#FDFBF7]"
+                  isMe ? "bg-[#1B0203] text-[#FDFBF7]" : "bg-[#F40009] text-[#FDFBF7]"
                 }`}
               >
-                <span className="text-xs font-mono font-bold">{isMe ? "ME" : "SA"}</span>
+                <span className="text-xs font-mono font-bold">{isMe ? "ME" : "MI"}</span>
               </div>
 
               {/* Message bubble */}
@@ -283,8 +283,8 @@ export const BookCompanionChat: React.FC = () => {
 
         <button
           type="submit"
-          className="p-3.5 bg-[#2C1D11] hover:bg-[#1E100A] text-[#FDFBF7] rounded-xl transition-colors shrink-0 cursor-pointer shadow-md flex items-center justify-center"
-          title="Send query to Saga Oracle"
+          className="p-3.5 bg-[#F40009] hover:bg-[#B80006] text-[#FDFBF7] rounded-xl transition-colors shrink-0 cursor-pointer shadow-md flex items-center justify-center"
+          title="Send query to Midusa Oracle"
         >
           <Send className="w-4.5 h-4.5" />
         </button>

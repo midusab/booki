@@ -1,22 +1,22 @@
 @import "tailwindcss";
 
 @theme {
-  --font-serif: "Playfair Display", Georgia, serif;
-  --font-sans: "Plus Jakarta Sans", "Inter", sans-serif;
+  --font-serif: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", "SF Pro", "Segoe UI", "Helvetica Neue", system-ui, sans-serif;
+  --font-sans: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", "SF Pro", "Segoe UI", "Helvetica Neue", system-ui, sans-serif;
   
-  --color-bg-cream: #FDFBF7;
-  --color-accent-espresso: #2C1D11;
-  --color-accent-sand: #F5EFEB;
-  --color-accent-gold: #C5A03A;
-  --color-accent-gold-dark: #8D6E3F;
-  --color-accent-sage: #5A7065;
-  --color-accent-sage-light: #E8EDE9;
+  --color-bg-cream: #FFFDFD;
+  --color-accent-espresso: #1B0203; /* Deepest black-cherry */
+  --color-accent-sand: #FDF1F2; /* Soft Coca-Cola red cream */
+  --color-accent-gold: #F40009; /* Coca-Cola Red */
+  --color-accent-gold-dark: #C30015; /* Deeper brick Coca-Cola Red */
+  --color-accent-sage: #D2121D; /* Coca-Cola Red variant */
+  --color-accent-sage-light: #FFEBEB; /* Soft light-red background tint */
 }
 
 body {
   font-family: var(--font-sans);
-  background-color: #FDFBF7;
-  color: #2C1D11;
+  background-color: #FFFDFD;
+  color: #1B0203;
 }
 
 h1, h2, h3, h4, .font-serif {
@@ -29,12 +29,12 @@ h1, h2, h3, h4, .font-serif {
   height: 5px;
 }
 ::-webkit-scrollbar-track {
-  background: #FDFBF7;
+  background: #FFFDFD;
 }
 ::-webkit-scrollbar-thumb {
-  background: #D5DDD7;
+  background: #FCE8E8;
   border-radius: 10px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #A3B5A9;
+  background: #F40009;
 }

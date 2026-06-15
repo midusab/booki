@@ -73,7 +73,7 @@ export const DiscussionLounge: React.FC<DiscussionLoungeProps> = ({
     onAddReview({
       bookTitle: bookTitle.trim(),
       author: author.trim(),
-      reviewerName: reviewerName.trim() || "Saga Sage",
+      reviewerName: reviewerName.trim() || "Midusa Sage",
       rating,
       vibe,
       text: text.trim(),

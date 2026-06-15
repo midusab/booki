@@ -86,7 +86,7 @@ export const INITIAL_REVIEWS: Review[] = [
     reviewerName: "Julian Kross",
     reviewerAvatar: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&q=80&w=150",
     rating: 4,
-    text: "An absolute masterclass in world-building. Re-reading this with Saga has made me appreciate the intricate layers of ecology, politics, and mysticism even more. It is heavy, dense, and demanding, but incredibly rewarding. The golden-espresso dust smells feel very real here.",
+    text: "An absolute masterclass in world-building. Re-reading this with Midusa Reads has made me appreciate the intricate layers of ecology, politics, and mysticism even more. It is heavy, dense, and demanding, but incredibly rewarding. The golden-espresso dust smells feel very real here.",
     vibe: "Mind-Bending",
     upvotes: 9,
     upvotedByMe: false,
@@ -186,7 +186,7 @@ export const SCHED_MEETING = {
   bookTitle: "Dune",
   date: "2026-06-20",
   time: "19:30 PST",
-  platform: "Saga Fluid Lounge ☕",
+  platform: "Midusa Reads Lounge ☕",
   topic: "Chapters 12-25: Melange, Mysticism & Political Manipulation",
 };
 
