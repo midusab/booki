@@ -1,0 +1,6 @@
+{
+  "name": "Saga",
+  "description": "A luxury, immersive digital sanctuary for modern book clubs featuring an interactive reading room, AI book companion, and discussion lounge.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
