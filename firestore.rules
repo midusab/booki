@@ -28,11 +28,31 @@ service cloud.firestore {
           && (data.createdAt == null || data.createdAt is string);
     }
 
+    function isValidBook(data) {
+      return data.id is string && data.id.size() <= 128
+          && data.title is string && data.title.size() <= 256
+          && data.author is string && data.author.size() <= 256
+          && data.genre is string && data.genre.size() <= 256
+          && data.coverImage is string && data.coverImage.size() <= 2048
+          && data.status is string && (data.status == 'Want to Read' || data.status == 'In Progress' || data.status == 'Completed')
+          && data.currentPage is int && data.currentPage >= 0
+          && data.totalPages is int && data.totalPages >= 0
+          && (data.genreCategory == null || (data.genreCategory is string && data.genreCategory.size() <= 256))
+          && data.dateAdded is string && data.dateAdded.size() <= 64;
+    }
+
     match /users/{userId} {
       allow get: if isOwner(userId);
       allow create: if isOwner(userId) && isValidId(userId) && isValidUser(request.resource.data);
       allow update: if isOwner(userId) && isValidId(userId) && isValidUser(request.resource.data);
       allow delete: if false;
+
+      match /books/{bookId} {
+        allow read: if isOwner(userId);
+        allow create: if isOwner(userId) && isValidId(bookId) && isValidBook(request.resource.data);
+        allow update: if isOwner(userId) && isValidId(bookId) && isValidBook(request.resource.data);
+        allow delete: if isOwner(userId) && isValidId(bookId);
+      }
     }
   }
 }

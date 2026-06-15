@@ -24,6 +24,13 @@ import {
   LogOut
 } from "lucide-react";
 import { useAuth } from "./features/auth/hooks/useAuth";
+import { 
+  subscribeToBooks, 
+  seedInitialBooksIfEmpty, 
+  addBook, 
+  updateBook, 
+  removeBook 
+} from "./services/booksApi";
 
 export default function App() {
   const { user, logout } = useAuth();
@@ -41,12 +48,14 @@ export default function App() {
 
   // Initialize data from localStorage or default static templates on mount
   useEffect(() => {
-    const localBooks = localStorage.getItem("saga_bookshelf");
-    if (localBooks) {
-      setBooks(JSON.parse(localBooks));
-    } else {
-      setBooks(INITIAL_BOOKS);
-      localStorage.setItem("saga_bookshelf", JSON.stringify(INITIAL_BOOKS));
+    if (!user?.uid) {
+      const localBooks = localStorage.getItem("saga_bookshelf");
+      if (localBooks) {
+        setBooks(JSON.parse(localBooks));
+      } else {
+        setBooks(INITIAL_BOOKS);
+        localStorage.setItem("saga_bookshelf", JSON.stringify(INITIAL_BOOKS));
+      }
     }
 
     const localReviews = localStorage.getItem("saga_reviews");
@@ -78,14 +87,45 @@ export default function App() {
     } else {
       localStorage.setItem("saga_daily_pages", "22");
     }
-  }, []);
+  }, [user]);
+
+  // Real-time synchronization of bookshelf with Firestore
+  useEffect(() => {
+    if (!user?.uid) return;
+
+    let unsubscribe = () => {};
+
+    const setupRealtimeBooks = async () => {
+      try {
+        await seedInitialBooksIfEmpty(user.uid, INITIAL_BOOKS);
+      } catch (err) {
+        console.error("Error seeding initial books to Firestore:", err);
+      }
+
+      unsubscribe = subscribeToBooks(
+        user.uid,
+        (updatedBooks) => {
+          setBooks(updatedBooks);
+        },
+        (error) => {
+          console.error("Error subscribing to books:", error);
+        }
+      );
+    };
+
+    setupRealtimeBooks();
+
+    return () => {
+      unsubscribe();
+    };
+  }, [user]);
 
   // Save changes automatically on state transitions
   useEffect(() => {
-    if (books.length > 0) {
+    if (!user?.uid && books.length > 0) {
       localStorage.setItem("saga_bookshelf", JSON.stringify(books));
     }
-  }, [books]);
+  }, [books, user]);
 
   useEffect(() => {
     if (reviews.length > 0) {
@@ -140,42 +180,72 @@ export default function App() {
   };
 
   // Bookshelf functions
-  const handleAddBook = (newBook: Omit<Book, "id" | "dateAdded">) => {
+  const handleAddBook = async (newBook: Omit<Book, "id" | "dateAdded">) => {
     const bookWithId: Book = {
       ...newBook,
       id: `book-${Date.now()}`,
       dateAdded: new Date().toISOString().split("T")[0],
     };
-    setBooks((prev) => [...prev, bookWithId]);
+    if (user?.uid) {
+      try {
+        await addBook(user.uid, bookWithId);
+      } catch (err) {
+        console.error("Error adding book to Firestore:", err);
+      }
+    } else {
+      setBooks((prev) => [...prev, bookWithId]);
+    }
   };
 
-  const handleUpdateBookProgress = (id: string, currentPage: number, status?: BookStatus) => {
-    setBooks((prev) =>
-      prev.map((book) => {
-        if (book.id === id) {
-          const updatedStatus = status || (currentPage === book.totalPages ? "Completed" : book.status);
-          
-          // Badge check: if completing books
-          if (updatedStatus === "Completed" && book.status !== "Completed") {
-            const currentCompleted = books.filter((b) => b.status === "Completed").length + 1;
-            if (currentCompleted >= 3) {
-              handleUnlockBadge("badge-3"); // Literary Scholar
-            }
+  const handleUpdateBookProgress = async (id: string, currentPage: number, status?: BookStatus) => {
+    const bookToUpdate = books.find((b) => b.id === id);
+    if (!bookToUpdate) return;
+
+    const updatedStatus = status || (currentPage === bookToUpdate.totalPages ? "Completed" : bookToUpdate.status);
+    
+    // Badge check: if completing books
+    if (updatedStatus === "Completed" && bookToUpdate.status !== "Completed") {
+      const currentCompleted = books.filter((b) => b.status === "Completed").length + 1;
+      if (currentCompleted >= 3) {
+        handleUnlockBadge("badge-3"); // Literary Scholar
+      }
+    }
+
+    if (user?.uid) {
+      try {
+        await updateBook(user.uid, id, {
+          currentPage,
+          status: updatedStatus,
+        });
+      } catch (err) {
+        console.error("Error updating book progress in Firestore:", err);
+      }
+    } else {
+      setBooks((prev) =>
+        prev.map((book) => {
+          if (book.id === id) {
+            return {
+              ...book,
+              currentPage,
+              status: updatedStatus,
+            };
           }
-
-          return {
-            ...book,
-            currentPage,
-            status: updatedStatus,
-          };
-        }
-        return book;
-      })
-    );
+          return book;
+        })
+      );
+    }
   };
 
-  const handleRemoveBook = (id: string) => {
-    setBooks((prev) => prev.filter((b) => b.id !== id));
+  const handleRemoveBook = async (id: string) => {
+    if (user?.uid) {
+      try {
+        await removeBook(user.uid, id);
+      } catch (err) {
+        console.error("Error removing book from Firestore:", err);
+      }
+    } else {
+      setBooks((prev) => prev.filter((b) => b.id !== id));
+    }
   };
 
   // Review & Lounge functions

@@ -12,12 +12,34 @@
         "createdAt": { "type": "string", "format": "date-time", "description": "When the profile was created" }
       },
       "required": ["uid", "email", "createdAt"]
+    },
+    "Book": {
+      "title": "User Book",
+      "description": "A book on the user's personal bookshelf",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "description": "The unique book ID" },
+        "title": { "type": "string", "description": "Title of the book" },
+        "author": { "type": "string", "description": "Author of the book" },
+        "genre": { "type": "string", "description": "Genre name" },
+        "coverImage": { "type": "string", "description": "URL of the cover image" },
+        "status": { "type": "string", "enum": ["Want to Read", "In Progress", "Completed"], "description": "Reading progress status" },
+        "currentPage": { "type": "integer", "description": "Active page reading position" },
+        "totalPages": { "type": "integer", "description": "Total book volume pages" },
+        "genreCategory": { "type": "string", "description": "Normalized category tag" },
+        "dateAdded": { "type": "string", "description": "ISO date representing when book was logged" }
+      },
+      "required": ["id", "title", "author", "genre", "coverImage", "status", "currentPage", "totalPages", "dateAdded"]
     }
   },
   "firestore": {
     "/users/{userId}": {
       "schema": "User",
       "description": "User specific accounts data"
+    },
+    "/users/{userId}/books/{bookId}": {
+      "schema": "Book",
+      "description": "Books in the user's personal bookshelf"
     }
   }
 }
