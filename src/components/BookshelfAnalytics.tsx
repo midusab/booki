@@ -43,6 +43,92 @@ export const BookshelfAnalytics: React.FC<BookshelfAnalyticsProps> = ({
   const [currentPage, setCurrentPage] = useState("");
   const [coverUrl, setCoverUrl] = useState("");
 
+  // Online Real-time Book Search states
+  const [searchQuery, setSearchQuery] = useState("");
+  const [searchResults, setSearchResults] = useState<{
+    title: string;
+    author: string;
+    totalPages: number;
+    coverUrl: string;
+    genre: string;
+  }[]>([]);
+  const [isSearchingOnline, setIsSearchingOnline] = useState(false);
+  const [onlineSearchError, setOnlineSearchError] = useState("");
+
+  const handleOnlineSearch = async (e?: React.FormEvent) => {
+    if (e) e.preventDefault();
+    if (!searchQuery.trim()) return;
+
+    setIsSearchingOnline(true);
+    setOnlineSearchError("");
+    setSearchResults([]);
+
+    try {
+      const response = await fetch(`https://openlibrary.org/search.json?q=${encodeURIComponent(searchQuery)}&limit=5`);
+      if (!response.ok) throw new Error("Search failed");
+      const data = await response.json();
+      const docs = data.docs || [];
+      const formatted = docs.slice(0, 5).map((doc: any) => {
+        const titleStr = doc.title || "Untitled Book";
+        const authorStr = doc.author_name ? doc.author_name.join(", ") : "Unknown Author";
+        const pages = doc.number_of_pages_median || doc.number_of_pages_median === doc.number_of_pages_median ? doc.number_of_pages_median : 250;
+        const coverId = doc.cover_i;
+        const coverImageUrl = coverId 
+          ? `https://covers.openlibrary.org/b/id/${coverId}-M.jpg` 
+          : "https://images.unsplash.com/photo-1544947950-fa07a98d237f?auto=format&fit=crop&q=80&w=600";
+        const primaryGenre = doc.subject && doc.subject[0] ? doc.subject[0] : "Fiction";
+
+        return {
+          title: titleStr,
+          author: authorStr,
+          totalPages: typeof pages === "number" ? pages : 250,
+          coverUrl: coverImageUrl,
+          genre: primaryGenre
+        };
+      });
+      setSearchResults(formatted);
+      if (formatted.length === 0) {
+        setOnlineSearchError("No books found matching this query.");
+      }
+    } catch (err) {
+      console.error(err);
+      setOnlineSearchError("Unable to search books right now. Try manual entry!");
+    } finally {
+      setIsSearchingOnline(false);
+    }
+  };
+
+  const selectOnlineBook = (book: {
+    title: string;
+    author: string;
+    totalPages: number;
+    coverUrl: string;
+    genre: string;
+  }) => {
+    setTitle(book.title);
+    setAuthor(book.author);
+    setTotalPages(book.totalPages.toString());
+    setCurrentPage("0");
+    setCoverUrl(book.coverUrl);
+    
+    // Auto-map genre tag if possible
+    const tag = book.genre.toLowerCase();
+    if (tag.includes("sci") || tag.includes("space") || tag.includes("future")) {
+      setGenre("Sci-Fi");
+    } else if (tag.includes("mystery") || tag.includes("thriller") || tag.includes("crime") || tag.includes("spy")) {
+      setGenre("Mystery");
+    } else if (tag.includes("bio") || tag.includes("memoir") || tag.includes("history") || tag.includes("life")) {
+      setGenre("Biography");
+    } else if (tag.includes("poet") || tag.includes("verse") || tag.includes("lyric")) {
+      setGenre("Poetry");
+    } else {
+      setGenre("Fiction");
+    }
+    // Clear search list to condense views
+    setSearchResults([]);
+    setSearchQuery("");
+  };
+
   // Canvas details
   const chartCanvasRef = useRef<HTMLCanvasElement | null>(null);
   const chartInstanceRef = useRef<any>(null);
@@ -267,6 +353,78 @@ export const BookshelfAnalytics: React.FC<BookshelfAnalyticsProps> = ({
         <form onSubmit={handleSubmit} className="bg-white p-6.5 rounded-3xl border border-[#E8EDE9] shadow-md space-y-4 animate-slide-up">
           <h3 className="text-lg font-serif font-bold text-[#2C1D11] border-b border-[#E8EDE9] pb-2 lowercase">add new book</h3>
           
+          {/* Online Real-time Book Search integration */}
+          <div className="bg-[#FFEBEB]/20 p-4.5 rounded-2xl border border-[#FFEBEB] space-y-3">
+            <h4 className="text-xs font-serif font-bold text-[#1B0203] flex items-center gap-1.5 lowercase">
+              🔍 search online (real-time autofill)
+            </h4>
+            <div className="flex gap-2">
+              <input
+                type="text"
+                placeholder="search by title, author, or keyword..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") {
+                    e.preventDefault();
+                    handleOnlineSearch();
+                  }
+                }}
+                className="flex-1 bg-white border border-[#E8EDE9] rounded-xl px-3.5 py-2 text-xs text-[#2C1D11] focus:outline-none focus:border-[#5A7065]"
+              />
+              <button
+                type="button"
+                disabled={isSearchingOnline}
+                onClick={() => handleOnlineSearch()}
+                className="px-4 py-2 bg-[#F40009] hover:bg-[#D30007] disabled:bg-gray-300 text-white rounded-xl text-xs font-semibold cursor-pointer transition-colors"
+              >
+                {isSearchingOnline ? "searching..." : "search"}
+              </button>
+            </div>
+
+            {onlineSearchError && (
+              <p className="text-[11px] text-[#F40009] lowercase">{onlineSearchError}</p>
+            )}
+
+            {searchResults.length > 0 && (
+              <div className="space-y-1.5 pt-1.5">
+                <p className="text-[10px] text-gray-500 font-mono lowercase">select a book to autofill form:</p>
+                <div className="max-h-[220px] overflow-y-auto space-y-1 bg-white p-1 rounded-xl border border-[#E8EDE9]">
+                  {searchResults.map((res, idx) => (
+                    <button
+                      key={idx}
+                      type="button"
+                      onClick={() => selectOnlineBook(res)}
+                      className="w-full text-left p-2 hover:bg-[#FFEBEB]/35 rounded-lg flex items-center gap-3 transition-colors text-xs border-b border-gray-50 last:border-0 cursor-pointer"
+                    >
+                      {res.coverUrl && (
+                        <img
+                          src={res.coverUrl}
+                          alt={res.title}
+                          className="w-8 h-11 object-cover rounded-md border border-gray-100 shrink-0"
+                          referrerPolicy="no-referrer"
+                        />
+                      )}
+                      <div className="min-w-0 flex-1">
+                        <p className="font-bold text-[#1B0203] truncate leading-tight">{res.title}</p>
+                        <p className="text-[10px] text-gray-500 truncate mt-0.5">by {res.author}</p>
+                      </div>
+                      <span className="text-[9px] font-mono text-[#5A7065] shrink-0 font-semibold bg-gray-100 px-2 py-0.5 rounded-full">
+                        {res.totalPages} pgs
+                      </span>
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
+
+          <div className="relative flex py-1.5 items-center">
+            <div className="flex-grow border-t border-dashed border-gray-200"></div>
+            <span className="flex-shrink mx-3 text-[10px] text-gray-400 font-mono tracking-wider uppercase">or input manually</span>
+            <div className="flex-grow border-t border-dashed border-gray-200"></div>
+          </div>
+
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             <div className="space-y-1 col-span-1">
               <label htmlFor="title-field" className="block text-xxs font-semibold text-[#5A7065] lowercase">book title</label>

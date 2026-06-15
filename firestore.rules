@@ -1,11 +1,6 @@
 rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
-    // Default-deny catch-all
-    match /{document=**} {
-      allow read, write: if false;
-    }
-
     // Helper functions
     function isSignedIn() {
       return request.auth != null;
@@ -15,44 +10,22 @@ service cloud.firestore {
       return isSignedIn() && request.auth.uid == userId;
     }
 
-    function isValidId(id) {
-      return id is string && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$');
-    }
-
-    function isValidUser(data) {
-      return data.uid is string 
-          && data.uid.size() <= 128
-          && (data.email == null || (data.email is string && data.email.size() <= 256))
-          && (data.displayName == null || (data.displayName is string && data.displayName.size() <= 256))
-          && (data.photoURL == null || (data.photoURL is string && data.photoURL.size() <= 2048))
-          && (data.createdAt == null || data.createdAt is string);
-    }
-
-    function isValidBook(data) {
-      return data.id is string && data.id.size() <= 128
-          && data.title is string && data.title.size() <= 256
-          && data.author is string && data.author.size() <= 256
-          && data.genre is string && data.genre.size() <= 256
-          && data.coverImage is string && data.coverImage.size() <= 2048
-          && data.status is string && (data.status == 'Want to Read' || data.status == 'In Progress' || data.status == 'Completed')
-          && data.currentPage is int && data.currentPage >= 0
-          && data.totalPages is int && data.totalPages >= 0
-          && (data.genreCategory == null || (data.genreCategory is string && data.genreCategory.size() <= 256))
-          && data.dateAdded is string && data.dateAdded.size() <= 64;
+    match /test/connection {
+      allow read: if true;
     }
 
     match /users/{userId} {
-      allow get: if isOwner(userId);
-      allow create: if isOwner(userId) && isValidId(userId) && isValidUser(request.resource.data);
-      allow update: if isOwner(userId) && isValidId(userId) && isValidUser(request.resource.data);
-      allow delete: if false;
+      allow read, write: if isOwner(userId);
 
       match /books/{bookId} {
-        allow read: if isOwner(userId);
-        allow create: if isOwner(userId) && isValidId(bookId) && isValidBook(request.resource.data);
-        allow update: if isOwner(userId) && isValidId(bookId) && isValidBook(request.resource.data);
-        allow delete: if isOwner(userId) && isValidId(bookId);
+        allow read, write: if isOwner(userId);
       }
+    }
+
+    match /reviews/{reviewId} {
+      allow read: if true;
+      allow create, update: if isSignedIn();
+      allow delete: if isSignedIn() && (resource == null || resource.data.reviewerUid == request.auth.uid);
     }
   }
 }

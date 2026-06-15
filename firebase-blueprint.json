@@ -9,6 +9,8 @@
         "email": { "type": "string", "description": "The email address" },
         "displayName": { "type": "string", "description": "The display name of the user" },
         "photoURL": { "type": "string", "description": "Profile picture URL" },
+        "streak": { "type": "integer", "description": "Persistent active reading streak" },
+        "dailyPagesRead": { "type": "integer", "description": "Unlocks daily badges and active streak" },
         "createdAt": { "type": "string", "format": "date-time", "description": "When the profile was created" }
       },
       "required": ["uid", "email", "createdAt"]
@@ -30,6 +32,27 @@
         "dateAdded": { "type": "string", "description": "ISO date representing when book was logged" }
       },
       "required": ["id", "title", "author", "genre", "coverImage", "status", "currentPage", "totalPages", "dateAdded"]
+    },
+    "Review": {
+      "title": "Discussion Review",
+      "description": "Global review/discussion shared in the lounge",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "description": "The unique review ID" },
+        "bookTitle": { "type": "string", "description": "Title of the book reviewed" },
+        "author": { "type": "string", "description": "Author of the book" },
+        "reviewerName": { "type": "string", "description": "The author of the review" },
+        "reviewerAvatar": { "type": "string", "description": "Avatar of the reviewer" },
+        "reviewerUid": { "type": "string", "description": "User UID of the reviewer" },
+        "rating": { "type": "integer", "description": "Star rating 1 to 5" },
+        "text": { "type": "string", "description": "Review content text" },
+        "vibe": { "type": "string", "description": "Cozy, Mind-Bending, Poetic, Heartbreaking, Dark & Grim, Wholesome" },
+        "upvotes": { "type": "integer", "description": "Upvote count" },
+        "upvotedBy": { "type": "array", "description": "Array of user uids who upvoted the review" },
+        "comments": { "type": "array", "description": "Array of nested comment objects" },
+        "timestamp": { "type": "string", "description": "ISO timestamp when published" }
+      },
+      "required": ["id", "bookTitle", "author", "reviewerName", "reviewerAvatar", "rating", "text", "vibe", "upvotes", "comments", "timestamp"]
     }
   },
   "firestore": {
@@ -40,6 +63,10 @@
     "/users/{userId}/books/{bookId}": {
       "schema": "Book",
       "description": "Books in the user's personal bookshelf"
+    },
+    "/reviews/{reviewId}": {
+      "schema": "Review",
+      "description": "Global discussions shared in the lounge"
     }
   }
 }

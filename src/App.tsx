@@ -4,7 +4,7 @@
  */
 
 import React, { useState, useEffect } from "react";
-import { Book, Review, ReadingBadge, BookStatus } from "./types";
+import { Book, Review, Comment, ReadingBadge, BookStatus } from "./types";
 import { INITIAL_BOOKS, INITIAL_REVIEWS, INITIAL_BADGES } from "./data";
 import { SmartDashboard } from "./components/SmartDashboard";
 import { AmbientReadingRoom } from "./components/AmbientReadingRoom";
@@ -24,6 +24,8 @@ import {
   LogOut
 } from "lucide-react";
 import { useAuth } from "./features/auth/hooks/useAuth";
+import { doc, onSnapshot, updateDoc } from "firebase/firestore";
+import { db } from "./lib/firebase";
 import { 
   subscribeToBooks, 
   seedInitialBooksIfEmpty, 
@@ -31,6 +33,13 @@ import {
   updateBook, 
   removeBook 
 } from "./services/booksApi";
+import { 
+  subscribeToReviews, 
+  seedInitialReviewsIfEmpty, 
+  addReview, 
+  toggleUpvoteReview, 
+  addCommentToReview 
+} from "./services/discussionsApi";
 
 export default function App() {
   const { user, logout } = useAuth();
@@ -96,12 +105,6 @@ export default function App() {
     let unsubscribe = () => {};
 
     const setupRealtimeBooks = async () => {
-      try {
-        await seedInitialBooksIfEmpty(user.uid, INITIAL_BOOKS);
-      } catch (err) {
-        console.error("Error seeding initial books to Firestore:", err);
-      }
-
       unsubscribe = subscribeToBooks(
         user.uid,
         (updatedBooks) => {
@@ -120,6 +123,59 @@ export default function App() {
     };
   }, [user]);
 
+  // Real-time synchronization of discussions with Firestore
+  useEffect(() => {
+    let unsubscribe = () => {};
+
+    const setupRealtimeReviews = async () => {
+      try {
+        await seedInitialReviewsIfEmpty(INITIAL_REVIEWS);
+      } catch (err) {
+        console.error("Error seeding initial reviews:", err);
+      }
+
+      unsubscribe = subscribeToReviews(
+        user?.uid,
+        (updatedReviews) => {
+          setReviews(updatedReviews);
+        },
+        (error) => {
+          console.error("Error subscribing to discussions:", error);
+        }
+      );
+    };
+
+    setupRealtimeReviews();
+
+    return () => {
+      unsubscribe();
+    };
+  }, [user]);
+
+  // Real-time synchronization of user profile details (streak & dailyPagesRead)
+  useEffect(() => {
+    if (!user?.uid) return;
+
+    const userDocRef = doc(db, "users", user.uid);
+    const unsubscribe = onSnapshot(userDocRef, (snap) => {
+      if (snap.exists()) {
+        const data = snap.data();
+        if (typeof data.streak === "number") {
+          setReadingStreak(data.streak);
+        }
+        if (typeof data.dailyPagesRead === "number") {
+          setDailyPagesRead(data.dailyPagesRead);
+        }
+      }
+    }, (error) => {
+      console.error("Error subscribing to user profile:", error);
+    });
+
+    return () => {
+      unsubscribe();
+    };
+  }, [user]);
+
   // Save changes automatically on state transitions
   useEffect(() => {
     if (!user?.uid && books.length > 0) {
@@ -128,10 +184,10 @@ export default function App() {
   }, [books, user]);
 
   useEffect(() => {
-    if (reviews.length > 0) {
+    if (!user?.uid && reviews.length > 0) {
       localStorage.setItem("saga_reviews", JSON.stringify(reviews));
     }
-  }, [reviews]);
+  }, [reviews, user]);
 
   useEffect(() => {
     if (badges.length > 0) {
@@ -140,27 +196,59 @@ export default function App() {
   }, [badges]);
 
   useEffect(() => {
-    localStorage.setItem("saga_reading_streak", readingStreak.toString());
-  }, [readingStreak]);
+    if (!user?.uid) {
+      localStorage.setItem("saga_reading_streak", readingStreak.toString());
+    }
+  }, [readingStreak, user]);
 
   useEffect(() => {
-    localStorage.setItem("saga_daily_pages", dailyPagesRead.toString());
+    if (!user?.uid) {
+      localStorage.setItem("saga_daily_pages", dailyPagesRead.toString());
+    }
     
     // Check page-related badgess on daily increment
     if (dailyPagesRead >= 50) {
       handleUnlockBadge("badge-2"); // Page Turner
     }
-  }, [dailyPagesRead]);
+  }, [dailyPagesRead, user]);
 
   // Streak update function
-  const handleIncrementStreak = () => {
-    setReadingStreak((prev) => {
-      const next = prev + 1;
-      if (next >= 5) {
-        handleUnlockBadge("badge-1"); // Sanctuary Devotee
+  const handleIncrementStreak = async () => {
+    if (user?.uid) {
+      try {
+        const nextStreak = readingStreak + 1;
+        await updateDoc(doc(db, "users", user.uid), {
+          streak: nextStreak
+        });
+        if (nextStreak >= 5) {
+          handleUnlockBadge("badge-1"); // Sanctuary Devotee
+        }
+      } catch (err) {
+        console.error("Error incrementing streak in Firestore:", err);
       }
-      return next;
-    });
+    } else {
+      setReadingStreak((prev) => {
+        const next = prev + 1;
+        if (next >= 5) {
+          handleUnlockBadge("badge-1"); // Sanctuary Devotee
+        }
+        return next;
+      });
+    }
+  };
+
+  const handleUpdateDailyPagesRead = async (updater: number | ((prev: number) => number)) => {
+    const nextPages = typeof updater === "function" ? updater(dailyPagesRead) : updater;
+    setDailyPagesRead(nextPages);
+    if (user?.uid) {
+      try {
+        await updateDoc(doc(db, "users", user.uid), {
+          dailyPagesRead: nextPages
+        });
+      } catch (err) {
+        console.error("Error updating daily pages read in Firestore:", err);
+      }
+    }
   };
 
   // Badge trigger logic helper
@@ -249,55 +337,82 @@ export default function App() {
   };
 
   // Review & Lounge functions
-  const handleAddReview = (newRev: Omit<Review, "id" | "reviewerAvatar" | "upvotes" | "comments" | "timestamp">) => {
+  const handleAddReview = async (newRev: Omit<Review, "id" | "reviewerAvatar" | "upvotes" | "comments" | "timestamp">) => {
     const fullReview: Review = {
       ...newRev,
       id: `rev-${Date.now()}`,
-      reviewerAvatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=150",
+      reviewerAvatar: user?.photoURL || "https://images.unsplash.com/photo-1544947950-fa07a98d237f?auto=format&fit=crop&q=80&w=150",
+      reviewerName: user?.displayName || user?.email?.split("@")[0] || "Bibliophile",
       upvotes: 0,
       timestamp: new Date().toISOString(),
       comments: [],
     };
-    setReviews((prev) => [fullReview, ...prev]);
-    handleUnlockBadge("badge-4"); // Vibe Curator
+    
+    if (user?.uid) {
+      try {
+        await addReview(fullReview);
+        handleUnlockBadge("badge-4"); // Vibe Curator
+      } catch (err) {
+        console.error("Error adding review to Firestore:", err);
+      }
+    } else {
+      setReviews((prev) => [fullReview, ...prev]);
+      handleUnlockBadge("badge-4"); // Vibe Curator
+    }
   };
 
-  const handleUpvoteReview = (id: string) => {
-    setReviews((prev) =>
-      prev.map((rev) => {
-        if (rev.id === id) {
-          const isUpvoted = rev.upvotedByMe;
-          return {
-            ...rev,
-            upvotes: isUpvoted ? rev.upvotes - 1 : rev.upvotes + 1,
-            upvotedByMe: !isUpvoted,
-          };
-        }
-        return rev;
-      })
-    );
+  const handleUpvoteReview = async (id: string) => {
+    if (user?.uid) {
+      try {
+        await toggleUpvoteReview(id, user.uid);
+      } catch (err) {
+        console.error("Error upvoting review in Firestore:", err);
+      }
+    } else {
+      setReviews((prev) =>
+        prev.map((rev) => {
+          if (rev.id === id) {
+            const isUpvoted = rev.upvotedByMe;
+            return {
+              ...rev,
+              upvotes: isUpvoted ? rev.upvotes - 1 : rev.upvotes + 1,
+              upvotedByMe: !isUpvoted,
+            };
+          }
+          return rev;
+        })
+      );
+    }
   };
 
-  const handleAddComment = (reviewId: string, commentText: string) => {
-    const newComment = {
+  const handleAddComment = async (reviewId: string, commentText: string) => {
+    const newComment: Comment = {
       id: `c-${Date.now()}`,
-      authorName: "Club Companion",
-      authorAvatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=150",
+      authorName: user?.displayName || user?.email?.split("@")[0] || "Club Companion",
+      authorAvatar: user?.photoURL || "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=150",
       text: commentText,
       timestamp: new Date().toISOString(),
     };
 
-    setReviews((prev) =>
-      prev.map((rev) => {
-        if (rev.id === reviewId) {
-          return {
-            ...rev,
-            comments: [...rev.comments, newComment],
-          };
-        }
-        return rev;
-      })
-    );
+    if (user?.uid) {
+      try {
+        await addCommentToReview(reviewId, newComment);
+      } catch (err) {
+        console.error("Error adding comment to Firestore:", err);
+      }
+    } else {
+      setReviews((prev) =>
+        prev.map((rev) => {
+          if (rev.id === reviewId) {
+            return {
+              ...rev,
+              comments: [...rev.comments, newComment],
+            };
+          }
+          return rev;
+        })
+      );
+    }
   };
 
   return (
@@ -493,7 +608,7 @@ export default function App() {
             readingStreak={readingStreak}
             dailyStreakGoal={30}
             dailyPagesRead={dailyPagesRead}
-            setDailyPagesRead={setDailyPagesRead}
+            setDailyPagesRead={handleUpdateDailyPagesRead}
             incrementStreak={handleIncrementStreak}
             books={books}
             onUpdateBookProgress={handleUpdateBookProgress}

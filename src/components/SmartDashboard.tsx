@@ -6,6 +6,7 @@
 import React, { useState, useEffect } from "react";
 import { Book } from "../types";
 import { MOTIVATIONAL_QUOTES, SCHED_MEETING } from "../data";
+import { useAuth } from "../features/auth/hooks/useAuth";
 import { 
   Flame, 
   Sparkles, 
@@ -38,6 +39,7 @@ export const SmartDashboard: React.FC<SmartDashboardProps> = ({
   books,
   onUpdateBookProgress,
 }) => {
+  const { user } = useAuth();
   const [quoteIndex, setQuoteIndex] = useState(0);
   const [pageInput, setPageInput] = useState("");
   const activeBooks = books.filter((b) => b.status === "In Progress");
@@ -183,17 +185,29 @@ export const SmartDashboard: React.FC<SmartDashboardProps> = ({
           </div>
 
           <div className="space-y-2">
-            <span className="text-xxs text-[#F40009] font-mono font-bold block uppercase tracking-wider">Reading Diligence</span>
+            <span className="text-xxs text-[#F40009] font-mono font-bold block uppercase tracking-wider">
+              {user ? "Verified Registered Reader" : "Reading Diligence"}
+            </span>
             <h2 className="text-xl font-bold text-[#1B0203] uppercase tracking-wide">Active Reading Streak</h2>
-            <p className="text-xs text-gray-500">Save your streak by reading at least {targetPages} pages daily.</p>
+            {user ? (
+              <p className="text-xs text-gray-500">
+                Hi, <strong className="text-[#F40009]">{user.displayName || user.email?.split("@")[0]}</strong>! Your streak is saved securely in real-time.
+              </p>
+            ) : (
+              <p className="text-xs text-red-600 font-medium">
+                🔒 Streak tracking is disabled for guests. Please register to track streaks.
+              </p>
+            )}
           </div>
 
           <div className="my-6 flex items-center justify-center gap-4">
             <div className="text-center">
               <span className="text-5xl font-black text-[#1B0203] block tracking-tighter">
-                {readingStreak}
+                {user ? readingStreak : "🔒"}
               </span>
-              <span className="text-[10px] text-gray-500 font-bold block mt-1 uppercase">Days Active</span>
+              <span className="text-[10px] text-gray-500 font-bold block mt-1 uppercase">
+                {user ? "Days Active" : "Locked"}
+              </span>
             </div>
             <div className="h-10 w-px bg-[#FFEBEB]"></div>
             <div className="text-sm text-[#1B0203] space-y-1">
